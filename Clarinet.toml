@@ -1,0 +1,11 @@
+[project]
+name = "Amortize-RealEstate"
+requirements = []
+costs_version = 1
+[contracts.Amortize-V1]
+path = "contracts/Amortize-V1.clar"
+depends_on = []
+
+[contracts.math]
+path = "contracts/math.clar"
+depends_on = []
