@@ -60,8 +60,8 @@
 (define-private (amortize-Rate)
     (begin
         (asserts! (or (is-eq (var-get term-length) 5) (is-eq (var-get term-length) 7) (is-eq (var-get term-length) 10)) false)
-        (asserts! (and  (not (is-eq (var-get term-length) 5)) (is-eq (var-get term-length) 7) (is-eq (var-get term-length) 10)) (var-set amortize-rate 23))
-        (asserts! (and  (not (is-eq (var-get term-length) 7)) (is-eq (var-get term-length) 10)) (var-set amortize-rate 18))
+        (asserts! (not (is-eq (var-get term-length) 5)) (var-set amortize-rate 23))
+        (asserts! (not (is-eq (var-get term-length) 7)) (var-set amortize-rate 18))
         (var-set amortize-rate 10)
     )    
 )
