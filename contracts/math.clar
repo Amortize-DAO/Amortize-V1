@@ -6,6 +6,9 @@
 ;;
 
 ;; data maps and vars
+(define-map years {year: int} 
+{home-equity: int, btc-in-contract: int, est-price-BTC: int, est-contract-val: int, contract-price: int, est-profit: int})
+
 (define-data-var term-length int 10)
 
 (define-data-var price-BTC int 50000)
@@ -25,6 +28,8 @@
 (define-data-var payment-per-year int 1)
 
 (define-data-var rate-per-period int 15)
+
+(define-data-var year int 1)
 
 ;; private functions
 
@@ -53,11 +58,49 @@
     (ok (var-set rate-per-period ( * 100 (- (pow (+ 1 ( / ( / (var-get amortize-rate) 100) (var-get bitcoin-to-contract) )) ( / (var-get bitcoin-to-contract) (var-get payment-per-year))) 1))))
 )
 
-;; Decimal Issues returning 0 due to division, pow second argument cannot be < 0 problem
+;; Decimal Issues returning 0 due to division, pow second argument cannot be < 0 problem          pow (2,-3)
 (define-public (amortize-constant)
     (ok (var-set amortize-const ( / (* (var-get bitcoin-to-contract) (var-get rate-per-period)) (- 1 ( pow (+ 1 (var-get rate-per-period)) (* -1 (var-get payment-per-year) (var-get term-length)))))))
 )
 
+;;--------------------------14/11/21---------------------------
+
+(define-public (btc-appreciation)
+    (begin
+
+    (if (is-eq (var-get year) 1)
+
+        (map-set years {year: 1}
+        {home-equity: (+ (- (var-get value-home) (var-get curr-mortgage-balance)) (* (/ 5 100) (- (var-get value-home) (var-get curr-mortgage-balance)))),
+         btc-in-contract: (+ (- (var-get bitcoin-to-contract) (var-get amortize-const)) (* (var-get bitcoin-to-contract) (var-get rate-per-period))),
+         est-price-BTC: (+ (* (var-get price-BTC) (/ 5 100)) (var-get price-BTC)),
+         est-contract-val: (* (var-get BTC-in-contract) (var-get EST-price-BTC)),
+         contract-price: int, est-profit: int})
+        
+        ;; Home Equity
+        ;; (var-set home-equity (+ (- (var-get value-home) (var-get curr-mortgage-balance)) (* (/ 5 100) (- (var-get value-home) (var-get curr-mortgage-balance)))))
+        
+        ;; Bitcoin in Contract
+        ;; (var-set BTC-in-contract (+ (- (var-get bitcoin-to-contract) (var-get amortize-const)) (* (var-get bitcoin-to-contract) (var-get rate-per-period))))
+
+        ;; Estimated price of bitcoin
+        ;;(var-set EST-price-BTC (+ (* (var-get price-BTC) (/ 5 100)) (var-get price-BTC)))
+
+        ;; Estimated value of contract
+        ;;(var-set EST-contract-val (* (var-get BTC-in-contract) (var-get EST-price-BTC)))
+
+         (map-set years {year: (var-get year)}
+         {home-equity: (+ ( * (get home-equity (map-get? years {year: (- (var-get year) 1)})) (/ 5 100)) (get home-equity (map-get? years {year: (- (var-get year) 1)}))),
+         btc-in-contract: (+ (- (var-get bitcoin-to-contract) (var-get amortize-const)) (* (var-get bitcoin-to-contract) (var-get rate-per-period))),
+         est-price-BTC: (+ (* (var-get price-BTC) (/ 5 100)) (var-get price-BTC)),
+         est-contract-val: (* (var-get BTC-in-contract) (var-get EST-price-BTC)),
+         contract-price: int, est-profit: int})
+
+    )
+)
+
+
+;;---------------------------------------------READ-ONLY----------------------------------
 
 ;; public functions
 (define-read-only (get-amortize-rate)
