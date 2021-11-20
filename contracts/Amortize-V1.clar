@@ -1,15 +1,17 @@
-
-;; amotize-io
-;; <add a description here>
+;; <Main page implementation>
 
 ;; constants
 
 
 ;; data maps and vars
+
+;; for registration
 (define-map reg { id: principal } { national-id: uint, dob: (string-ascii 10), ss: uint })
 
+;; for entering property information
 (define-map prop-info {id: principal} {token-uri: (string-ascii 64)})
 
+;; for entering property/house details
 (define-map house-details {id: principal} {token-uri: (string-ascii 64)})
 
 
