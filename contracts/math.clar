@@ -70,12 +70,12 @@
 
     (if (is-eq (var-get year) 1)
 
-        (map-set years {year: 1}
+        (ok (map-set years {year: 1}
         {home-equity: (+ (- (var-get value-home) (var-get curr-mortgage-balance)) (* (/ 5 100) (- (var-get value-home) (var-get curr-mortgage-balance)))),
          btc-in-contract: (+ (- (var-get bitcoin-to-contract) (var-get amortize-const)) (* (var-get bitcoin-to-contract) (var-get rate-per-period))),
          est-price-BTC: (+ (* (var-get price-BTC) (/ 5 100)) (var-get price-BTC)),
-         est-contract-val: (* (var-get BTC-in-contract) (var-get EST-price-BTC)),
-         contract-price: int, est-profit: int})
+         est-contract-val: (* (+ (- (var-get bitcoin-to-contract) (var-get amortize-const)) (* (var-get bitcoin-to-contract) (var-get rate-per-period))) (+ (* (var-get price-BTC) (/ 5 100)) (var-get price-BTC))),
+         contract-price: 0, est-profit: 0}))
         
         ;; Home Equity
         ;; (var-set home-equity (+ (- (var-get value-home) (var-get curr-mortgage-balance)) (* (/ 5 100) (- (var-get value-home) (var-get curr-mortgage-balance)))))
@@ -89,12 +89,14 @@
         ;; Estimated value of contract
         ;;(var-set EST-contract-val (* (var-get BTC-in-contract) (var-get EST-price-BTC)))
 
-         (map-set years {year: (var-get year)}
-         {home-equity: (+ ( * (get home-equity (map-get? years {year: (- (var-get year) 1)})) (/ 5 100)) (get home-equity (map-get? years {year: (- (var-get year) 1)}))),
+        (ok (map-set years {year: (var-get year)}
+          {home-equity: (+ (- (var-get value-home) (var-get curr-mortgage-balance)) (* (/ 5 100) (- (var-get value-home) (var-get curr-mortgage-balance)))),
          btc-in-contract: (+ (- (var-get bitcoin-to-contract) (var-get amortize-const)) (* (var-get bitcoin-to-contract) (var-get rate-per-period))),
          est-price-BTC: (+ (* (var-get price-BTC) (/ 5 100)) (var-get price-BTC)),
-         est-contract-val: (* (var-get BTC-in-contract) (var-get EST-price-BTC)),
-         contract-price: int, est-profit: int})
+         est-contract-val: (* (+ (- (var-get bitcoin-to-contract) (var-get amortize-const)) (* (var-get bitcoin-to-contract) (var-get rate-per-period))) (+ (* (var-get price-BTC) (/ 5 100)) (var-get price-BTC))),
+         contract-price: 0, est-profit: 0}))
+
+    )
 
     )
 )
