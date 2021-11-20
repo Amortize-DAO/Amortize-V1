@@ -142,6 +142,7 @@
 (define-public (btc-appreciation)
     (begin
 
+<<<<<<< HEAD
         (if (is-eq (var-get year) 1) ;; for first year
 
             (ok (map-set years {year: 1}
@@ -172,6 +173,16 @@
                                         (unwrap-panic (get opt-call-fee (map-get? CA {year: 1})))
                                     ), 
                     est-profit: (max-est-profit)}))
+=======
+    (if (is-eq (var-get year) 1)
+
+        (ok (map-set years {year: 1}
+        {home-equity: (+ (- (var-get value-home) (var-get curr-mortgage-balance)) (* (/ 5 100) (- (var-get value-home) (var-get curr-mortgage-balance)))),
+         btc-in-contract: (+ (- (var-get bitcoin-to-contract) (var-get amortize-const)) (* (var-get bitcoin-to-contract) (var-get rate-per-period))),
+         est-price-BTC: (+ (* (var-get price-BTC) (/ 5 100)) (var-get price-BTC)),
+         est-contract-val: (* (+ (- (var-get bitcoin-to-contract) (var-get amortize-const)) (* (var-get bitcoin-to-contract) (var-get rate-per-period))) (+ (* (var-get price-BTC) (/ 5 100)) (var-get price-BTC))),
+         contract-price: 0, est-profit: 0}))
+>>>>>>> f0b37f573c255d0847859a9233cb49a90042c896
         
             ;; Home Equity
             ;; (var-set home-equity (+ (- (var-get value-home) (var-get curr-mortgage-balance)) (* (/ 5 100) (- (var-get value-home) (var-get curr-mortgage-balance)))))
@@ -214,9 +225,20 @@
     )
 )
 
+<<<<<<< HEAD
 ;; calculating contract appreciation
 (define-public (contract-appreciation)
     (begin
+=======
+        (ok (map-set years {year: (var-get year)}
+          {home-equity: (+ (- (var-get value-home) (var-get curr-mortgage-balance)) (* (/ 5 100) (- (var-get value-home) (var-get curr-mortgage-balance)))),
+         btc-in-contract: (+ (- (var-get bitcoin-to-contract) (var-get amortize-const)) (* (var-get bitcoin-to-contract) (var-get rate-per-period))),
+         est-price-BTC: (+ (* (var-get price-BTC) (/ 5 100)) (var-get price-BTC)),
+         est-contract-val: (* (+ (- (var-get bitcoin-to-contract) (var-get amortize-const)) (* (var-get bitcoin-to-contract) (var-get rate-per-period))) (+ (* (var-get price-BTC) (/ 5 100)) (var-get price-BTC))),
+         contract-price: 0, est-profit: 0}))
+
+    )
+>>>>>>> f0b37f573c255d0847859a9233cb49a90042c896
 
         (if (is-eq (var-get year) 1)
 
