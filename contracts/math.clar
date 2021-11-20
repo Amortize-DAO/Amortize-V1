@@ -283,16 +283,52 @@
 
             (ok (map-set CA {year: (var-get year)}
                     {
-                        payment: (* (var-get rate-per-period) (unwrap-panic (get balance (map-get? CA {year: (- (var-get year) 1)})))), 
-                        balance: (+ (unwrap-panic (get balance (map-get? CA {year: (- (var-get year) 1)}))) (- (var-get bitcoin-to-contract) (var-get amortize-const))), 
-                        anuity-withdrawal: (- (var-get amortize-const) (* (var-get rate-per-period) (unwrap-panic (get balance (map-get? CA {year: (- (var-get year) 1)}))))), 
+                        payment: (* 
+                                    (var-get rate-per-period) 
+                                    (unwrap-panic (get balance (map-get? CA {year: (- (var-get year) 1)})))
+                                ), 
+                        balance: (+ 
+                                    (unwrap-panic (get balance (map-get? CA {year: (- (var-get year) 1)}))) 
+                                    (- (var-get bitcoin-to-contract) (var-get amortize-const))
+                                ), 
+                        anuity-withdrawal: (- 
+                                                (var-get amortize-const) 
+                                                (* 
+                                                    (var-get rate-per-period) 
+                                                    (unwrap-panic (get balance (map-get? CA {year: (- (var-get year) 1)})))
+                                                )
+                                            ), 
                         tx-fee: 0, 
-                        btc-yield-nft: (- (- (var-get amortize-const) (* (var-get rate-per-period) (unwrap-panic (get balance (map-get? CA {year: (- (var-get year) 1)}))))) 0), 
-                        nft-yield-usd: (* (- (- (var-get amortize-const) (* (var-get rate-per-period) (var-get bitcoin-to-contract))) 0) (+ (* (var-get price-BTC) (/ 50 100)) (var-get price-BTC))), 
+                        btc-yield-nft: (- 
+                                            (- 
+                                                (var-get amortize-const) 
+                                                (* 
+                                                    (var-get rate-per-period) 
+                                                    (unwrap-panic (get balance (map-get? CA {year: (- (var-get year) 1)})))
+                                                )
+                                            )
+                                        0), 
+                        nft-yield-usd: (* 
+                                            (- 
+                                                (- 
+                                                    (var-get amortize-const) 
+                                                    (* (var-get rate-per-period) (var-get bitcoin-to-contract))
+                                                ) 
+                                            0) 
+                                            (+ 
+                                                (* (var-get price-BTC) (/ 50 100)) (var-get price-BTC)
+                                            )
+                                        ), 
                         contract-appr: 0, 
                         nft-rev-opt-call: 0, 
                         opt-call-fee: 0, 
-                        est-btc-price: (+ (* (unwrap-panic (get est-btc-price (map-get? CA {year: (- (var-get year) 1)}))) (/ 50 100)) (unwrap-panic (get est-btc-price (map-get? CA {year: (- (var-get year) 1)}))))
+                        est-btc-price: (+ 
+                                            (* 
+                                                (unwrap-panic (get est-btc-price (map-get? CA {year: (- (var-get year) 1)})))
+                                                (/ 50 100)
+                                            ) 
+                                            (unwrap-panic (get est-btc-price (map-get? CA {year: (- (var-get year) 1)})))
+                                        )
                     } 
                 )
             )
