@@ -61,27 +61,230 @@
         (if (is-eq (var-get year) 1) ;; for first year
 
             (ok (map-set pro-rev-call {year: 1}
-                {
-                    homes: (+ (var-get start-num-home) (* (var-get start-num-home) (var-get pro-grow-year))), 
-                    btc-contract: (/ (* (var-get avg-contract-val) (+ (var-get start-num-home) (* (var-get start-num-home) (var-get pro-grow-year)))) (/ (+ (var-get start-btc-price) (var-get est-btc-price)) 2)), 
-                    tx-rev-btc: (* (var-get tx-fee-btc) (/ (* (var-get avg-contract-val) (+ (var-get start-num-home) (* (var-get start-num-home) (var-get pro-grow-year)))) (/ (+ (var-get start-btc-price) (var-get est-btc-price)) 2))), 
-                    tx-rev-usd: (/ (* (var-get est-btc-price) (* (var-get tx-fee-btc) (/ (* (var-get avg-contract-val) (+ (var-get start-num-home) (* (var-get start-num-home) (var-get pro-grow-year)))) (/ (+ (var-get start-btc-price) (var-get est-btc-price)) 2)))) 1000), 
-                    fut-val: (/ (* (* (var-get tx-fee-btc) (/ (* (var-get avg-contract-val) (+ (var-get start-num-home) (* (var-get start-num-home) (var-get pro-grow-year)))) (/ (+ (var-get start-btc-price) (var-get est-btc-price)) 2))) (var-get est-btc-price)) 1000), 
-                    avg-btc-cont-pr: (/ (+ (var-get start-btc-price) (var-get est-btc-price)) 2)
-                })
+                    {
+                        homes: (+ 
+                                    (var-get start-num-home) 
+                                    (* 
+                                        (var-get start-num-home) 
+                                        (var-get pro-grow-year)
+                                    )
+                                ), 
+
+                        btc-contract: (/ 
+                                        (* 
+                                            (var-get avg-contract-val) 
+                                            (+ 
+                                                (var-get start-num-home) 
+                                                (* 
+                                                    (var-get start-num-home) 
+                                                    (var-get pro-grow-year)
+                                                )
+                                            )
+                                        ) 
+                                        (/ 
+                                            (+ 
+                                                (var-get start-btc-price) 
+                                                (var-get est-btc-price)
+                                            ) 
+                                        2)
+                                    ),
+
+                        tx-rev-btc: (* 
+                                        (var-get tx-fee-btc) 
+                                        (/ 
+                                            (* 
+                                                (var-get avg-contract-val) 
+                                                (+ 
+                                                    (var-get start-num-home) 
+                                                    (* 
+                                                        (var-get start-num-home) 
+                                                        (var-get pro-grow-year)
+                                                    )
+                                                )
+                                            ) 
+                                            (/ 
+                                            (+ 
+                                                (var-get start-btc-price) 
+                                                (var-get est-btc-price)
+                                            ) 
+                                            2)
+                                        )
+                                    ),
+
+                        tx-rev-usd: (/ 
+                                        (* 
+                                            (var-get est-btc-price) 
+                                            (* 
+                                                (var-get tx-fee-btc) 
+                                                (/ 
+                                                    (* 
+                                                        (var-get avg-contract-val) 
+                                                        (+ 
+                                                            (var-get start-num-home) 
+                                                            (* 
+                                                                (var-get start-num-home) 
+                                                                (var-get pro-grow-year)
+                                                            )
+                                                        )
+                                                    ) 
+                                                    (/ 
+                                                        (+ 
+                                                            (var-get start-btc-price) 
+                                                            (var-get est-btc-price)
+                                                        ) 
+                                                    2)
+                                                )
+                                            )
+                                        ) 
+                                    1000),
+
+                        fut-val: (/ 
+                                    (* 
+                                        (* 
+                                            (var-get tx-fee-btc) 
+                                            (/ 
+                                                (* 
+                                                    (var-get avg-contract-val) 
+                                                    (+ 
+                                                        (var-get start-num-home) 
+                                                        (* 
+                                                            (var-get start-num-home) 
+                                                            (var-get pro-grow-year)
+                                                        )
+                                                    )
+                                                ) 
+                                                (/ 
+                                                    (+ 
+                                                        (var-get start-btc-price) 
+                                                        (var-get est-btc-price)
+                                                    ) 
+                                                2)
+                                            )
+                                        ) 
+                                        (var-get est-btc-price)
+                                    ) 
+                                1000), 
+
+                        avg-btc-cont-pr: (/
+                                            (+ 
+                                                (var-get start-btc-price) 
+                                                (var-get est-btc-price)
+                                            ) 
+                                        2)
+                    }
+                )
             )
         
         
 
             (ok (map-set pro-rev-call {year: (var-get year)}
                 {
-                    homes: (+ (unwrap-panic (get homes (map-get? pro-rev-call {year: (- (var-get year) 1)}))) (* (unwrap-panic (get homes (map-get? pro-rev-call {year: (- (var-get year) 1)}))) (var-get pro-grow-year))), 
-                    btc-contract: (/ (* (var-get avg-contract-val) (unwrap-panic (get homes (map-get? pro-rev-call {year: (var-get year)})))) (/ (+ (var-get start-btc-price) (var-get est-btc-price)) 2)), 
-                    tx-rev-btc: (* (var-get tx-fee-btc) (/ (* (var-get avg-contract-val) (unwrap-panic (get homes (map-get? pro-rev-call {year: (var-get year)})))) (/ (+ (var-get start-btc-price) (var-get est-btc-price)) 2))), 
-                    tx-rev-usd: (/ (* (* (var-get tx-fee-btc) (/ (* (var-get avg-contract-val) (unwrap-panic (get homes (map-get? pro-rev-call {year: (var-get year)})))) (/ (+ (var-get start-btc-price) (var-get est-btc-price)) 2))) (var-get est-btc-price)) 1000), 
-                    fut-val: (/ (* (var-get est-btc-price) (+ (* (var-get tx-fee-btc) (/ (* (var-get avg-contract-val) (unwrap-panic (get homes (map-get? pro-rev-call {year: (var-get year)})))) (/ (+ (var-get start-btc-price) (var-get est-btc-price)) 2))) (* (var-get tx-fee-btc) (/ (* (var-get avg-contract-val) (unwrap-panic (get homes (map-get? pro-rev-call {year: (- (var-get year) 1)})))) (/ (+ (var-get start-btc-price) (var-get est-btc-price)) 2))))) 1000), 
-                    avg-btc-cont-pr: (/ (+ (var-get start-btc-price) (var-get est-btc-price)) 2)
-                })
+                    homes: (+ 
+                                (unwrap-panic 
+                                    (get homes (map-get? pro-rev-call {year: (- (var-get year) 1)}))
+                                ) 
+                                (* 
+                                    (unwrap-panic (get homes (map-get? pro-rev-call {year: (- (var-get year) 1)}))) 
+                                    (var-get pro-grow-year)
+                                )
+                            ), 
+
+                    btc-contract: (/ 
+                                    (* 
+                                        (var-get avg-contract-val) 
+                                        (unwrap-panic (get homes (map-get? pro-rev-call {year: (var-get year)})))
+                                    ) 
+                                    (/ 
+                                        (+ 
+                                            (var-get start-btc-price) 
+                                            (var-get est-btc-price)
+                                        ) 
+                                    2)
+                                ),
+
+                    tx-rev-btc: (* 
+                                    (var-get tx-fee-btc) 
+                                    (/ 
+                                        (* 
+                                            (var-get avg-contract-val) 
+                                            (unwrap-panic (get homes (map-get? pro-rev-call {year: (var-get year)})))
+                                        ) 
+                                        (/ 
+                                            (+ 
+                                                (var-get start-btc-price) 
+                                                (var-get est-btc-price)
+                                            ) 
+                                        2)
+                                    )
+                                ),
+
+                    tx-rev-usd: (/ 
+                                    (* 
+                                        (* 
+                                            (var-get tx-fee-btc) 
+                                            (/ 
+                                                (* 
+                                                    (var-get avg-contract-val) 
+                                                    (unwrap-panic (get homes (map-get? pro-rev-call {year: (var-get year)})))
+                                                ) 
+                                                (/ 
+                                                    (+ 
+                                                        (var-get start-btc-price) 
+                                                        (var-get est-btc-price)
+                                                    ) 
+                                                2)
+                                            )
+                                        ) 
+                                        (var-get est-btc-price)
+                                    ) 
+                                1000),
+
+                    fut-val: (/ 
+                                (* 
+                                    (var-get est-btc-price) 
+                                    (+ 
+                                        (* 
+                                            (var-get tx-fee-btc) 
+                                            (/ 
+                                                (* 
+                                                    (var-get avg-contract-val) 
+                                                    (unwrap-panic (get homes (map-get? pro-rev-call {year: (var-get year)})))
+                                                ) 
+                                                (/ 
+                                                    (+ 
+                                                        (var-get start-btc-price) 
+                                                        (var-get est-btc-price)
+                                                    ) 
+                                                2)
+                                            )
+                                        ) 
+                                        (* 
+                                            (var-get tx-fee-btc) 
+                                            (/ 
+                                                (* 
+                                                    (var-get avg-contract-val) 
+                                                    (unwrap-panic (get homes (map-get? pro-rev-call {year: (- (var-get year) 1)})))
+                                                ) 
+                                                (/ 
+                                                    (+ 
+                                                        (var-get start-btc-price) 
+                                                        (var-get est-btc-price)
+                                                    ) 
+                                                2)
+                                            )
+                                        )
+                                    )
+                                ) 
+                            1000), 
+                            
+                    avg-btc-cont-pr: (/ 
+                                        (+ 
+                                            (var-get start-btc-price) 
+                                            (var-get est-btc-price)
+                                        ) 
+                                    2)
+                }
+                )
             )
 
         )
