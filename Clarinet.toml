@@ -9,3 +9,11 @@ depends_on = []
 [contracts.math]
 path = "contracts/math.clar"
 depends_on = []
+
+[contracts.math-2]
+path = "contracts/math-2.clar"
+depends_on = []
+
+[contracts.nft-math]
+path = "contracts/nft-math.clar"
+depends_on = []
