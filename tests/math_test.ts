@@ -15,9 +15,10 @@ Clarinet.test({
             Tx.contractCall('math', 'get-amortize-rate', [], wallet_1.address),
             Tx.contractCall('math', 'rate-per-Period', [], wallet_1.address),
             Tx.contractCall('math', 'get-rate-per-Period', [], wallet_1.address),
+            Tx.contractCall('math', 'btc-appreciation', [], wallet_1.address),
         ]);
 
-        assertEquals(block.receipts.length, 8);
+        assertEquals(block.receipts.length, 9);
         assertEquals(block.height, 2);
         
     
@@ -48,6 +49,9 @@ Clarinet.test({
 
         // Will fail due to Decimal Issues 
         block.receipts[7].result
+        .expectInt(15);
+
+        block.receipts[8].result
         .expectInt(15);
     },
 });
