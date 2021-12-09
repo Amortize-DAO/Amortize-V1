@@ -11,9 +11,9 @@ for (let N = 0; N < HomeOwnerCal.TermLength; N++)
     BTCApprections[N] = new BTCAppreciate();
 }
 
-let DataProts = new Array(HomeOwnerCal.TermLength);
+let DataProts = new Array(HomeOwnerCal.TermLength + 1);
 
-for (let N = 0; N < HomeOwnerCal.TermLength; N++)
+for (let N = 0; N < HomeOwnerCal.TermLength + 1; N++)
 {
     DataProts[N] = new DataForProtocol();
 }
@@ -29,7 +29,7 @@ function HomeOwner(PriceBTC, ValueOfHome, TermLength, CurrMorBalance){
 
 function WithdrawlContract(PriceBTC, TermLength, PaymentFrequency)
 {
-    this.BTCAmount = PriceBTC;
+    this.BTCAmount = HomeOwnerCal.BtcToCot;
     
     if (TermLength === 10)
     {
@@ -50,7 +50,7 @@ function WithdrawlContract(PriceBTC, TermLength, PaymentFrequency)
     
     this.RatePerPeriod = Math.round((((1 + ((this.AmortizeRate/100) / this.BTCAmount)) ** (this.BTCAmount / this.PaymentFrequency)) - 1) * 100);
 
-    this.AmortizeConstant = Math.round((this.BTCAmount * this.RatePerPeriod/100) / (1 - ((1 + this.RatePerPeriod/100) ^ (- (TermLength *  this.PaymentFrequency)))));
+    this.AmortizeConstant = ((this.BTCAmount * (this.RatePerPeriod/100)) / (1 - ((1 + (this.RatePerPeriod / 100)) ** (-1 * (TermLength *  this.PaymentFrequency)))));
 
 }
 
@@ -72,7 +72,7 @@ function DataForProtocol()
     this.TxFee = 2.5;
     this.BTCYieldNFT = 0;
     this.NFTYieldUSD = 0;
-    this.CotAppr = 17.3262663/100;
+    this.CotAppr = 0;
     this.NFTRevOptCall = (HomeOwnerCal.HomeEquity * this.CotAppr) + HomeOwnerCal.HomeEquity;
     this.OptCallFee = 0.05;
     this.ESTBTCPrice = (HomeOwnerCal.PriceBTC * Y) + HomeOwnerCal.PriceBTC;
@@ -111,7 +111,15 @@ function CalculateDataProtocol(DataProts)
         DataProts[N].Payment = DataProts[N-1].Balance * (WithDraws.RatePerPeriod/100);
         DataProts[N].Balance = DataProts[N-1].Balance - WithDraws.AmortizeConstant + DataProts[N].Payment;
         DataProts[N].AnuityWithdraw = WithDraws.AmortizeConstant - DataProts[N].Payment;
-        DataProts[N].TxFee *= DataProts[N].CotAppr;
+    }
+
+    for (let N = 1; N < DataProts.length; N++){
+        let searchVal = HomeOwnerCal.TermLength - N + 1;
+        DataProts[N].CotAppr = DataProts[searchVal].AnuityWithdraw * 100;
+    }
+    
+    for (let N = 1; N < DataProts.length; N++){
+        DataProts[N].TxFee *= DataProts[N].CotAppr * 0.025;
         DataProts[N].BTCYieldNFT = DataProts[N].AnuityWithdraw - DataProts[N].TxFee;
         DataProts[N].ESTBTCPrice += (DataProts[N-1].ESTBTCPrice * X); 
         DataProts[N].NFTYieldUSD = DataProts[N].BTCYieldNFT * DataProts[N].ESTBTCPrice;
@@ -120,6 +128,85 @@ function CalculateDataProtocol(DataProts)
     }
 }
 
+let StartNumHom = 0;
+let AnualProtGrow = 0;
+let AvgNumOptCall = 0;
+
+function PropRev(){
+    this.homes = 0;
+    this.btcincot = 0;
+    this.txrevbtc = 0;
+    this.txrevusd = 0;
+    this.futvaltxinbtc = 0;
+    this.avgbtccotpr = 0;
+}
+
+let ProtRev = new Array(HomeOwnerCal.TermLength);
+
+for (let N = 0; N < HomeOwnerCal.TermLength; N++)
+{   
+    ProtRev[N] = new PropRev();
+
+}
+
+function CalPropRev(){
+    ProtRev[0].homes = (StartNumHom * AnualProtGrow) + StartNumHom;
+    ProtRev[0].btcincot = (ProtRev[0].homes * HomeOwnerCal.HomeEquity) / avgbtccotpr;
+    ProtRev[0].txrevbtc = (ProtRev[0].btcincot * DataProts[0].TxFee); 
+    ProtRev[0].txrevusd = (ProtRev[0].txrevbtc *  DataProts[0].ESTBTCPrice) / 1000;
+    ProtRev[0].futvaltxinbtc = ProtRev[0].txrevusd;
+    ProtRev[0].avgbtccotpr = (HomeOwnerCal.PriceBTC + DataProts[0].ESTBTCPrice) / 2;
+
+    for (let N = 1; N < PropRev.length; N++){
+        ProtRev[N].homes = (ProtRev[N-1].homes * AnualProtGrow) + ProtRev[N-1].homes;
+        ProtRev[N].btcincot = (ProtRev[N].homes * HomeOwnerCal.HomeEquity) / avgbtccotpr;
+        ProtRev[N].txrevbtc = (ProtRev[N].btcincot * DataProts[0].TxFee); 
+        ProtRev[N].txrevusd = (ProtRev[N].txrevbtc *  DataProts[N].ESTBTCPrice) / 1000;
+        ProtRev[N].futvaltxinbtc = ((ProtRev[N-1].txrevbtc + ProtRev[N].txrevbtc) * DataProts[N].ESTBTCPrice) / 1000;
+        ProtRev[N].avgbtccotpr = (HomeOwnerCal.PriceBTC + DataProts[N].ESTBTCPrice) / 2;
+    
+    }
+}
+
+function NFTInvestCal(){
+    this.btcnftyield = 0;
+    this.nftrevusd = 0;
+    this.contprice = 0;
+    this.usdroci = 0;
+    this.roioptcal = 0;
+    this.irroptcal = 0;
+}
+
+let InvestNFT = new Array(HomeOwnerCal.TermLength);
+
+for (let N = 0; N < HomeOwnerCal.TermLength; N++)
+{   
+    InvestNFT[N] = new NFTInvestCal();
+}
+
+function CalNFTInvest(){
+    InvestNFT[0].btcnftyield = DataProts[0].AnuityWithdraw - DataProts[0].TxFee;
+    InvestNFT[0].nftrevusd = InvestNFT[0].btcnftyield * DataProts[0].ESTBTCPrice;
+    InvestNFT[0].contprice = DataProts[0].NFTRevOptCall;
+    InvestNFT[0].usdroci = InvestNFT[0].contprice - HomeOwnerCal.HomeEquity;
+    InvestNFT[0].roioptcal = (InvestNFT[0].usdroci / HomeOwnerCal.HomeEquity) * 100;
+    InvestNFT[0].irroptcal = InvestNFT[0].usdroci / HomeOwnerCal.HomeEquity;
+
+    for (let N = 1; N < NFTInvestCal.length; N++){
+        InvestNFT[N].btcnftyield = DataProts[N].AnuityWithdraw - DataProts[N].TxFee;
+        InvestNFT[N].nftrevusd = InvestNFT[N].btcnftyield * DataProts[N].ESTBTCPrice;
+        InvestNFT[N].contprice = DataProts[N].NFTRevOptCall;
+        InvestNFT[N].usdroci = InvestNFT[N].contprice - HomeOwnerCal.HomeEquity;
+        InvestNFT[N].roioptcal = (InvestNFT[N].usdroci / HomeOwnerCal.HomeEquity) * 100;
+        InvestNFT[N].irroptcal = (InvestNFT[N].usdroci / HomeOwnerCal.HomeEquity) / N;
+    }
+}
+
+
+
+
+
+
 function print()
 {
     for (let N = 0; N < DataProts.length; N++)
@@ -127,6 +214,7 @@ function print()
         console.log(DataProts[N].Payment);
         console.log(DataProts[N].Balance);
         console.log(DataProts[N].AnuityWithdraw);
+        console.log(DataProts[N].CotAppr);
         console.log(DataProts[N].TxFee);
         console.log(DataProts[N].BTCYieldNFT);
         console.log(DataProts[N].ESTBTCPrice);
@@ -137,7 +225,8 @@ function print()
         console.log("\n\n");
     }
 
-    //console.log((WithDraws.RatePerPeriod/100));
+    console.log(WithDraws.RatePerPeriod/100);
+    console.log(WithDraws.AmortizeConstant);
 }
 
 
