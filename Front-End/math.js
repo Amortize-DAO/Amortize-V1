@@ -2,20 +2,20 @@ let Y = 0.50;
 let X = 0.05;
 let OptionFee = 0.05;
 let HomeOwnerCal = new HomeOwner(50000, 500000, 10, 200000);
-let WithDraws = new WithdrawlContract(HomeOwnerCal.PriceBTC, HomeOwnerCal.TermLength, 1);
-
-let BTCApprections = new Array(HomeOwnerCal.TermLength);
-
-for (let N = 0; N < HomeOwnerCal.TermLength; N++)
-{   
-    BTCApprections[N] = new BTCAppreciate();
-}
+let WithDraws = new WithdrawlContract(1);
 
 let DataProts = new Array(HomeOwnerCal.TermLength + 1);
 
 for (let N = 0; N < HomeOwnerCal.TermLength + 1; N++)
 {
     DataProts[N] = new DataForProtocol();
+}
+
+let BTCApprections = new Array(HomeOwnerCal.TermLength + 1);
+
+for (let N = 0; N < HomeOwnerCal.TermLength + 1; N++)
+{   
+    BTCApprections[N] = new BTCAppreciate();
 }
 
 function HomeOwner(PriceBTC, ValueOfHome, TermLength, CurrMorBalance){
@@ -27,21 +27,21 @@ function HomeOwner(PriceBTC, ValueOfHome, TermLength, CurrMorBalance){
     this.BtcToCot = this.HomeEquity/this.PriceBTC;
 }
 
-function WithdrawlContract(PriceBTC, TermLength, PaymentFrequency)
+function WithdrawlContract(PaymentFrequency)
 {
     this.BTCAmount = HomeOwnerCal.BtcToCot;
     
-    if (TermLength === 10)
+    if (HomeOwnerCal.TermLength === 10)
     {
         this.AmortizeRate = 15;
     }
 
-    else if (TermLength === 7)
+    else if (HomeOwnerCal.TermLength === 7)
     {
         this.AmortizeRate = 18;
     }
 
-    else if (TermLength === 5)
+    else if (HomeOwnerCal.TermLength === 5)
     {
         this.AmortizeRate = 23;
     }
@@ -50,16 +50,16 @@ function WithdrawlContract(PriceBTC, TermLength, PaymentFrequency)
     
     this.RatePerPeriod = Math.round((((1 + ((this.AmortizeRate/100) / this.BTCAmount)) ** (this.BTCAmount / this.PaymentFrequency)) - 1) * 100);
 
-    this.AmortizeConstant = ((this.BTCAmount * (this.RatePerPeriod/100)) / (1 - ((1 + (this.RatePerPeriod / 100)) ** (-1 * (TermLength *  this.PaymentFrequency)))));
+    this.AmortizeConstant = ((this.BTCAmount * (this.RatePerPeriod/100)) / (1 - ((1 + (this.RatePerPeriod / 100)) ** (-1 * (HomeOwnerCal.TermLength *  this.PaymentFrequency)))));
 
 }
 
 function BTCAppreciate()
 {
-    this.HomeEquity =  0;  
-    this.BTCinContract = 0;
-    this.ESTPriceBTC = 0;
-    this.ESTValCot = 0;
+    this.HomeEquity =  HomeOwnerCal.ValueOfHome - HomeOwnerCal.CurrMorBalance;  
+    this.BTCinContract = DataProts[0].Balance;
+    this.ESTPriceBTC = HomeOwnerCal.PriceBTC;
+    this.ESTValCot = this.BTCinContract * this.ESTPriceBTC;
     this.CotPrice =  0;
     this.ESTProfit = 0;
 }
@@ -75,37 +75,37 @@ function DataForProtocol()
     this.CotAppr = 0;
     this.NFTRevOptCall = (HomeOwnerCal.HomeEquity * this.CotAppr) + HomeOwnerCal.HomeEquity;
     this.OptCallFee = 0.05;
-    this.ESTBTCPrice = (HomeOwnerCal.PriceBTC * Y) + HomeOwnerCal.PriceBTC;
+    this.ESTBTCPrice = HomeOwnerCal.PriceBTC;
 }
 
-function CalculateAppreciation (BTCApprections) {  // Method to display property type of Bike
+function CalculateAppreciation () {  // Method to display property type of Bike
         
-    BTCApprections[0].HomeEquity = (HomeOwnerCal.ValueOfHome - HomeOwnerCal.CurrMorBalance) * Y
+    BTCApprections[1].HomeEquity = ((HomeOwnerCal.ValueOfHome - HomeOwnerCal.CurrMorBalance) * X)
          + (HomeOwnerCal.ValueOfHome - HomeOwnerCal.CurrMorBalance);
     
-         BTCApprections[0].BTCinContract = DataProts[0].Balance;
+         BTCApprections[1].BTCinContract = DataProts[1].Balance;
 
-         BTCApprections[0].ESTPriceBTC = (HomeOwnerCal.PriceBTC * X) + HomeOwnerCal.PriceBTC;
+         BTCApprections[1].ESTPriceBTC = (HomeOwnerCal.PriceBTC * Y) + HomeOwnerCal.PriceBTC;
 
-         BTCApprections[0].ESTValCot = BTCApprections[0].BTCinContract * BTCApprections[0].ESTPriceBTC;
+         BTCApprections[1].ESTValCot = BTCApprections[1].BTCinContract * BTCApprections[1].ESTPriceBTC;
 
-         BTCApprections[0].CotPrice = DataProts[0].NFTRevOptCall + DataProts[0].OptCallFees;
+         BTCApprections[1].CotPrice = DataProts[1].NFTRevOptCall + DataProts[1].OptCallFee;
 
-         BTCAppreciates[0].ESTProfit = Math.max(((BTCApprections[0].ESTValCot - BTCApprections[0].CotPrice) - (BTCApprections[0].ESTValCot * OptionFee)), 0);
+         BTCApprections[1].ESTProfit = Math.max(((BTCApprections[1].ESTValCot - BTCApprections[1].CotPrice) - (BTCApprections[1].ESTValCot * OptionFee)), 0);
 
-    for (let N = 1; N < BTCApprections.length; N++)
+    for (let N = 2; N < BTCApprections.length; N++)
     {
-        BTCApprections[N].HomeEquity = (BTCApprections[N-1].HomeEquity * Y) + BTCApprections[N-1].HomeEquity;
+        BTCApprections[N].HomeEquity = (BTCApprections[N-1].HomeEquity * X) + BTCApprections[N-1].HomeEquity;
         BTCApprections[N].BTCinContract = DataProts[N].Balance;
         BTCApprections[N].ESTPriceBTC = DataProts[N].ESTBTCPrice;
         BTCApprections[N].ESTValCot = BTCApprections[N].ESTPriceBTC * BTCApprections[N].BTCinContract;
-        BTCApprections[N].CotPrice = DataProts[N].NFTRevOptCall + DataProts[N].OptCallFees;
-        BTCAppreciates[N].ESTProfit = Math.max(((BTCApprections[N].ESTValCot - BTCApprections[N].CotPrice) - (BTCApprections[N].ESTValCot * OptionFee)), 0);
+        BTCApprections[N].CotPrice = DataProts[N].NFTRevOptCall + DataProts[N].OptCallFee;
+        BTCApprections[N].ESTProfit = Math.max(((BTCApprections[N].ESTValCot - BTCApprections[N].CotPrice) - (BTCApprections[N].ESTValCot * OptionFee)), 0);
     }
 
 }
 
-function CalculateDataProtocol(DataProts)
+function CalculateDataProtocol()
 {
     for (let N = 1; N < DataProts.length; N++){
         DataProts[N].Payment = DataProts[N-1].Balance * (WithDraws.RatePerPeriod/100);
@@ -119,11 +119,11 @@ function CalculateDataProtocol(DataProts)
     }
     
     for (let N = 1; N < DataProts.length; N++){
-        DataProts[N].TxFee *= DataProts[N].CotAppr * 0.025;
-        DataProts[N].BTCYieldNFT = DataProts[N].AnuityWithdraw - DataProts[N].TxFee;
-        DataProts[N].ESTBTCPrice += (DataProts[N-1].ESTBTCPrice * X); 
-        DataProts[N].NFTYieldUSD = DataProts[N].BTCYieldNFT * DataProts[N].ESTBTCPrice;
-        DataProts[N].NFTRevOptCall = (DataProts[N-1].NFTRevOptCall * DataProts[N].CotAppr) + DataProts[N-1].NFTRevOptCall;
+        DataProts[N].TxFee = (DataProts[N].CotAppr * 0.025) / 100;
+        DataProts[N].BTCYieldNFT = (DataProts[N].AnuityWithdraw - DataProts[N].TxFee) * 100;
+        DataProts[N].ESTBTCPrice = (DataProts[N-1].ESTBTCPrice * Y) + DataProts[N-1].ESTBTCPrice; 
+        DataProts[N].NFTYieldUSD = (DataProts[N].BTCYieldNFT/100) * DataProts[N].ESTBTCPrice;
+        DataProts[N].NFTRevOptCall = (DataProts[N-1].NFTRevOptCall * (DataProts[N].CotAppr/100)) + DataProts[N-1].NFTRevOptCall;
         DataProts[N].OptCallFee *= DataProts[N].NFTRevOptCall;
     }
 }
@@ -207,32 +207,54 @@ function CalNFTInvest(){
 
 
 
-function print()
+function printDataProts()
 {
     for (let N = 0; N < DataProts.length; N++)
     {
-        console.log(DataProts[N].Payment);
-        console.log(DataProts[N].Balance);
-        console.log(DataProts[N].AnuityWithdraw);
-        console.log(DataProts[N].CotAppr);
-        console.log(DataProts[N].TxFee);
-        console.log(DataProts[N].BTCYieldNFT);
-        console.log(DataProts[N].ESTBTCPrice);
-        console.log(DataProts[N].NFTYieldUSD);
-        console.log(DataProts[N].NFTRevOptCall);
-        console.log(DataProts[N].OptCallFee);
+        console.log("YEAR: " + N + "\n");
+        console.log("Payment: " + DataProts[N].Payment);
+        console.log("Balance: " + DataProts[N].Balance);
+        console.log("Annuity Withdrawal: " + DataProts[N].AnuityWithdraw);
+        console.log("Contract Appreciation: " + DataProts[N].CotAppr);
+        console.log("2.5% TxFee: " + DataProts[N].TxFee);
+        console.log("BTC-NFT Yield: " + DataProts[N].BTCYieldNFT);
+        console.log("EST-BTC-Price: " + DataProts[N].ESTBTCPrice);
+        console.log("NFT Yield USD: " + DataProts[N].NFTYieldUSD);
+        console.log("NFT Revenue on Option Call: " + DataProts[N].NFTRevOptCall);
+        console.log("Option Call Fee: " + DataProts[N].OptCallFee);
 
         console.log("\n\n");
     }
 
-    console.log(WithDraws.RatePerPeriod/100);
-    console.log(WithDraws.AmortizeConstant);
+    console.log("Rate Per Period: " + WithDraws.RatePerPeriod/100);
+    console.log("Amortize Constant: " + WithDraws.AmortizeConstant);
+}
+
+function printBTCApprection()
+{
+    for (let N = 0; N < BTCApprections.length; N++)
+    {
+        console.log("YEAR: " + N + "\n");
+        console.log("Home Equity: " + BTCApprections[N].HomeEquity);
+        console.log("BTC-in-Contract: " + BTCApprections[N].BTCinContract);
+        console.log("EST-BTC-Price: " + BTCApprections[N].ESTPriceBTC);
+        console.log("EST-Contract Value: " + BTCApprections[N].ESTValCot);
+        console.log("Contract Price: " + BTCApprections[N].CotPrice);
+        console.log("EST-Profit: " + BTCApprections[N].ESTProfit);
+
+        console.log("\n\n");
+    }
 }
 
 
-CalculateDataProtocol(DataProts);
 
-print();
-// CalculateAppreciation(Apprections);
+CalculateDataProtocol();
+
+// printDataProts();
+
+CalculateAppreciation();
+
+printBTCApprection();
+
 
 
