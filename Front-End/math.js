@@ -1,8 +1,18 @@
-let Y = 0.50;
-let X = 0.05;
-let OptionFee = 0.05;
-let HomeOwnerCal = new HomeOwner(50000, 500000, 10, 200000);
+// Constants 
+
+let Y = 0.50; // Bitcoin Appreciation Percentage, Default -> 50%
+let X = 0.05; // Property Apprection Percentage, Default -> 5%
+let OptionFee = 0.05; // Default -> 5%
+let StartNumHom = 500;
+let AnualProtGrow = 1; // Percentage, Default -> 100% 
+let AvgNumOptCall = 0.50; // Percentage, Default -> 50%
+
+// Variables
+
+let HomeOwnerCal = new HomeOwner(50000, 500000, 5, 200000);
 let WithDraws = new WithdrawlContract(1);
+
+// Array Initialization
 
 let DataProts = new Array(HomeOwnerCal.TermLength + 1);
 
@@ -17,6 +27,23 @@ for (let N = 0; N < HomeOwnerCal.TermLength + 1; N++)
 {   
     BTCApprections[N] = new BTCAppreciate();
 }
+
+let ProtRev = new Array(HomeOwnerCal.TermLength + 1);
+
+for (let N = 0; N < HomeOwnerCal.TermLength + 1; N++)
+{   
+    ProtRev[N] = new PropRev();
+}
+
+let InvestNFT = new Array(HomeOwnerCal.TermLength + 1);
+
+for (let N = 0; N < HomeOwnerCal.TermLength + 1; N++)
+{   
+    InvestNFT[N] = new NFTInvestCal();
+}
+
+
+// User-defined-objects
 
 function HomeOwner(PriceBTC, ValueOfHome, TermLength, CurrMorBalance){
     this.PriceBTC = PriceBTC;
@@ -78,7 +105,28 @@ function DataForProtocol()
     this.ESTBTCPrice = HomeOwnerCal.PriceBTC;
 }
 
-function CalculateAppreciation () {  // Method to display property type of Bike
+function PropRev(){
+    this.homes = 0;
+    this.btcincot = 0;
+    this.txrevbtc = 0;
+    this.txrevusd = 0;
+    this.futvaltxinbtc = 0;
+    this.avgbtccotpr = 0;
+}
+
+function NFTInvestCal(){
+    this.btcnftyield = 0;
+    this.nftrevusd = 0;
+    this.contprice = 0;
+    this.usdroci = 0;
+    this.roioptcal = 0;
+    this.irroptcal = 0;
+}
+
+
+// Calculation Functions
+
+function CalculateAppreciation () {  
         
     BTCApprections[1].HomeEquity = ((HomeOwnerCal.ValueOfHome - HomeOwnerCal.CurrMorBalance) * X)
          + (HomeOwnerCal.ValueOfHome - HomeOwnerCal.CurrMorBalance);
@@ -128,84 +176,44 @@ function CalculateDataProtocol()
     }
 }
 
-let StartNumHom = 0;
-let AnualProtGrow = 0;
-let AvgNumOptCall = 0;
+function CalculatePropRev(){
+    ProtRev[1].avgbtccotpr = (HomeOwnerCal.PriceBTC + DataProts[1].ESTBTCPrice) / 2;
+    ProtRev[1].homes = (StartNumHom * AnualProtGrow) + StartNumHom;
+    ProtRev[1].btcincot = (ProtRev[1].homes * HomeOwnerCal.HomeEquity) / ProtRev[1].avgbtccotpr;
+    ProtRev[1].txrevbtc = (ProtRev[1].btcincot * (DataProts[0].TxFee/100)); 
+    ProtRev[1].txrevusd = (ProtRev[1].txrevbtc *  DataProts[1].ESTBTCPrice) / 1000;
+    ProtRev[1].futvaltxinbtc = ProtRev[1].txrevusd;
+    
 
-function PropRev(){
-    this.homes = 0;
-    this.btcincot = 0;
-    this.txrevbtc = 0;
-    this.txrevusd = 0;
-    this.futvaltxinbtc = 0;
-    this.avgbtccotpr = 0;
-}
-
-let ProtRev = new Array(HomeOwnerCal.TermLength);
-
-for (let N = 0; N < HomeOwnerCal.TermLength; N++)
-{   
-    ProtRev[N] = new PropRev();
-
-}
-
-function CalPropRev(){
-    ProtRev[0].homes = (StartNumHom * AnualProtGrow) + StartNumHom;
-    ProtRev[0].btcincot = (ProtRev[0].homes * HomeOwnerCal.HomeEquity) / avgbtccotpr;
-    ProtRev[0].txrevbtc = (ProtRev[0].btcincot * DataProts[0].TxFee); 
-    ProtRev[0].txrevusd = (ProtRev[0].txrevbtc *  DataProts[0].ESTBTCPrice) / 1000;
-    ProtRev[0].futvaltxinbtc = ProtRev[0].txrevusd;
-    ProtRev[0].avgbtccotpr = (HomeOwnerCal.PriceBTC + DataProts[0].ESTBTCPrice) / 2;
-
-    for (let N = 1; N < PropRev.length; N++){
+    for (let N = 2; N < ProtRev.length; N++){
+        ProtRev[N].avgbtccotpr = (HomeOwnerCal.PriceBTC + DataProts[N].ESTBTCPrice) / 2;
         ProtRev[N].homes = (ProtRev[N-1].homes * AnualProtGrow) + ProtRev[N-1].homes;
-        ProtRev[N].btcincot = (ProtRev[N].homes * HomeOwnerCal.HomeEquity) / avgbtccotpr;
-        ProtRev[N].txrevbtc = (ProtRev[N].btcincot * DataProts[0].TxFee); 
+        ProtRev[N].btcincot = (ProtRev[N].homes * HomeOwnerCal.HomeEquity) / ProtRev[N].avgbtccotpr;
+        ProtRev[N].txrevbtc = (ProtRev[N].btcincot * (DataProts[0].TxFee/100)); 
         ProtRev[N].txrevusd = (ProtRev[N].txrevbtc *  DataProts[N].ESTBTCPrice) / 1000;
         ProtRev[N].futvaltxinbtc = ((ProtRev[N-1].txrevbtc + ProtRev[N].txrevbtc) * DataProts[N].ESTBTCPrice) / 1000;
-        ProtRev[N].avgbtccotpr = (HomeOwnerCal.PriceBTC + DataProts[N].ESTBTCPrice) / 2;
-    
     }
 }
 
-function NFTInvestCal(){
-    this.btcnftyield = 0;
-    this.nftrevusd = 0;
-    this.contprice = 0;
-    this.usdroci = 0;
-    this.roioptcal = 0;
-    this.irroptcal = 0;
-}
+function CalculateNFTInvest(){
+    InvestNFT[1].btcnftyield = DataProts[1].AnuityWithdraw - DataProts[1].TxFee;
+    InvestNFT[1].nftrevusd = InvestNFT[1].btcnftyield * DataProts[1].ESTBTCPrice;
+    InvestNFT[1].contprice = DataProts[1].NFTRevOptCall;
+    InvestNFT[1].usdroci = InvestNFT[1].contprice - HomeOwnerCal.HomeEquity;
+    InvestNFT[1].roioptcal = (InvestNFT[1].usdroci / HomeOwnerCal.HomeEquity) * 100;
+    InvestNFT[1].irroptcal = (InvestNFT[1].usdroci / HomeOwnerCal.HomeEquity) * 100;
 
-let InvestNFT = new Array(HomeOwnerCal.TermLength);
-
-for (let N = 0; N < HomeOwnerCal.TermLength; N++)
-{   
-    InvestNFT[N] = new NFTInvestCal();
-}
-
-function CalNFTInvest(){
-    InvestNFT[0].btcnftyield = DataProts[0].AnuityWithdraw - DataProts[0].TxFee;
-    InvestNFT[0].nftrevusd = InvestNFT[0].btcnftyield * DataProts[0].ESTBTCPrice;
-    InvestNFT[0].contprice = DataProts[0].NFTRevOptCall;
-    InvestNFT[0].usdroci = InvestNFT[0].contprice - HomeOwnerCal.HomeEquity;
-    InvestNFT[0].roioptcal = (InvestNFT[0].usdroci / HomeOwnerCal.HomeEquity) * 100;
-    InvestNFT[0].irroptcal = InvestNFT[0].usdroci / HomeOwnerCal.HomeEquity;
-
-    for (let N = 1; N < NFTInvestCal.length; N++){
+    for (let N = 2; N < InvestNFT.length; N++){
         InvestNFT[N].btcnftyield = DataProts[N].AnuityWithdraw - DataProts[N].TxFee;
         InvestNFT[N].nftrevusd = InvestNFT[N].btcnftyield * DataProts[N].ESTBTCPrice;
         InvestNFT[N].contprice = DataProts[N].NFTRevOptCall;
         InvestNFT[N].usdroci = InvestNFT[N].contprice - HomeOwnerCal.HomeEquity;
         InvestNFT[N].roioptcal = (InvestNFT[N].usdroci / HomeOwnerCal.HomeEquity) * 100;
-        InvestNFT[N].irroptcal = (InvestNFT[N].usdroci / HomeOwnerCal.HomeEquity) / N;
+        InvestNFT[N].irroptcal = ((InvestNFT[N].usdroci / HomeOwnerCal.HomeEquity) / N) * 100;
     }
 }
 
-
-
-
-
+// Logging Functions
 
 function printDataProts()
 {
@@ -246,15 +254,59 @@ function printBTCApprection()
     }
 }
 
+function printPropRev()
+{
+    for (let N = 0; N < ProtRev.length; N++)
+    {
+        console.log("YEAR: " + N + "\n");
 
+        console.log("Homes: " + ProtRev[N].homes);
+        console.log("BTC in Contract: " + ProtRev[N].btcincot);
+        console.log("Tx Rev BTC: " + ProtRev[N].txrevbtc);
+        console.log("Tx Rev USD: " + ProtRev[N].txrevusd);
+        console.log("Future TX Rev BTC: " + ProtRev[N].futvaltxinbtc);
+        console.log("Avg BTC Contract Price: " + ProtRev[N].avgbtccotpr);
+
+        console.log("\n\n");
+    }
+}
+
+function printNFTInvest()
+{
+    for (let N = 0; N < InvestNFT.length; N++)
+    {
+        console.log("YEAR: " + N + "\n");
+
+        console.log("BTC NFT Yield: " + InvestNFT[N].btcnftyield);
+        console.log("NFT Revenue USD: " + InvestNFT[N].nftrevusd);
+        console.log("Contract Price: " + InvestNFT[N].contprice);
+        console.log("USD ROC: " + InvestNFT[N].usdroci);
+        console.log("ROI Option Call: " + InvestNFT[N].roioptcal);
+        console.log("IRR Option Call: " + InvestNFT[N].irroptcal);
+        
+        console.log("\n\n");
+    }
+}
+
+
+// Main/Test Block
 
 CalculateDataProtocol();
 
-// printDataProts();
+printDataProts();
 
 CalculateAppreciation();
 
-printBTCApprection();
+// printBTCApprection();
+
+CalculatePropRev();
+
+// printPropRev();
+
+CalculateNFTInvest();
+
+// printNFTInvest();
+
 
 
 
