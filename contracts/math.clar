@@ -171,7 +171,10 @@
                                         (unwrap-panic (get nft-rev-opt-call (map-get? CA {year: 1}))) 
                                         (unwrap-panic (get opt-call-fee (map-get? CA {year: 1})))
                                     ), 
-                    est-profit: (max-est-profit)}))
+                    est-profit: (max-est-profit)
+                }
+            )
+        )
         
             ;; Home Equity
             ;; (var-set home-equity (+ (- (var-get value-home) (var-get curr-mortgage-balance)) (* (/ 5 100) (- (var-get value-home) (var-get curr-mortgage-balance)))))
