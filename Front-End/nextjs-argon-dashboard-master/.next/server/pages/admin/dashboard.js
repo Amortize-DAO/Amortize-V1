@@ -164,7 +164,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! reactstrap */ "reactstrap");
 /* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(reactstrap__WEBPACK_IMPORTED_MODULE_2__);
 
-var _jsxFileName = "C:\\Users\\DELL\\Desktop\\nextjs-argon-dashboard-master\\components\\Footers\\AdminFooter.js";
+var _jsxFileName = "E:\\Amortize\\Amortize-V1\\Front-End\\nextjs-argon-dashboard-master\\components\\Footers\\AdminFooter.js";
 
 /*eslint-disable*/
  // reactstrap components
@@ -278,7 +278,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(reactstrap__WEBPACK_IMPORTED_MODULE_2__);
 
 
-var _jsxFileName = "C:\\Users\\DELL\\Desktop\\nextjs-argon-dashboard-master\\components\\Headers\\Header.js";
+var _jsxFileName = "E:\\Amortize\\Amortize-V1\\Front-End\\nextjs-argon-dashboard-master\\components\\Headers\\Header.js";
  // reactstrap components
 
 
@@ -723,7 +723,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(reactstrap__WEBPACK_IMPORTED_MODULE_3__);
 
 
-var _jsxFileName = "C:\\Users\\DELL\\Desktop\\nextjs-argon-dashboard-master\\components\\Navbars\\AdminNavbar.js";
+var _jsxFileName = "E:\\Amortize\\Amortize-V1\\Front-End\\nextjs-argon-dashboard-master\\components\\Navbars\\AdminNavbar.js";
 
  // reactstrap components
 
@@ -1048,7 +1048,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! reactstrap */ "reactstrap");
 /* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(reactstrap__WEBPACK_IMPORTED_MODULE_5__);
 
-var _jsxFileName = "C:\\Users\\DELL\\Desktop\\nextjs-argon-dashboard-master\\components\\Sidebar\\Sidebar.js";
+var _jsxFileName = "E:\\Amortize\\Amortize-V1\\Front-End\\nextjs-argon-dashboard-master\\components\\Sidebar\\Sidebar.js";
 
 /*eslint-disable*/
 
@@ -1694,7 +1694,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var routes_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! routes.js */ "./routes.js");
 
 
-var _jsxFileName = "C:\\Users\\DELL\\Desktop\\nextjs-argon-dashboard-master\\layouts\\Admin.js";
+var _jsxFileName = "E:\\Amortize\\Amortize-V1\\Front-End\\nextjs-argon-dashboard-master\\layouts\\Admin.js";
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -4613,7 +4613,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var components_Headers_Header_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! components/Headers/Header.js */ "./components/Headers/Header.js");
 
 
-var _jsxFileName = "C:\\Users\\DELL\\Desktop\\nextjs-argon-dashboard-master\\pages\\admin\\dashboard.js";
+var _jsxFileName = "E:\\Amortize\\Amortize-V1\\Front-End\\nextjs-argon-dashboard-master\\pages\\admin\\dashboard.js";
  // node.js library that concatenates classes (strings)
 
  // javascipt plugin for creating charts

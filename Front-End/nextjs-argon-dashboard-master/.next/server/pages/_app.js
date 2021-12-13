@@ -143,7 +143,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! reactstrap */ "reactstrap");
 /* harmony import */ var reactstrap__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(reactstrap__WEBPACK_IMPORTED_MODULE_2__);
 
-var _jsxFileName = "C:\\Users\\DELL\\Desktop\\nextjs-argon-dashboard-master\\components\\PageChange\\PageChange.js";
+var _jsxFileName = "E:\\Amortize\\Amortize-V1\\Front-End\\nextjs-argon-dashboard-master\\components\\PageChange\\PageChange.js";
  // reactstrap components
 
  // core components
@@ -399,7 +399,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var assets_scss_nextjs_argon_dashboard_scss__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(assets_scss_nextjs_argon_dashboard_scss__WEBPACK_IMPORTED_MODULE_9__);
 
 
-var _jsxFileName = "C:\\Users\\DELL\\Desktop\\nextjs-argon-dashboard-master\\pages\\_app.js";
+var _jsxFileName = "E:\\Amortize\\Amortize-V1\\Front-End\\nextjs-argon-dashboard-master\\pages\\_app.js";
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
