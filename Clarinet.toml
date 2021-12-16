@@ -17,3 +17,7 @@ depends_on = []
 [contracts.nft-math]
 path = "contracts/nft-math.clar"
 depends_on = []
+
+[contracts.nft-minting]
+path = "contracts/nft-minting.clar"
+depends_on = []
