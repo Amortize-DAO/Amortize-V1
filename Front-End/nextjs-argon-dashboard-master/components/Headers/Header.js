@@ -20,10 +20,10 @@ function Header() {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Traffic
+                          BTC
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          350,897
+                          $50000
                         </span>
                       </div>
                       <Col className="col-auto">
@@ -50,9 +50,9 @@ function Header() {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          New users
+                          STX
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">2,356</span>
+                        <span className="h2 font-weight-bold mb-0">$2.09</span>
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
@@ -78,9 +78,11 @@ function Header() {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Sales
+                          Equity Price
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">924</span>
+                        <span className="h2 font-weight-bold mb-0">924 BTC</span>
+                        <br></br>
+                        <span className="h4 font-weight-bold mb-0">30000 STX</span>
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
@@ -106,7 +108,7 @@ function Header() {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Performance
+                          Total Equities
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">49,65%</span>
                       </div>
