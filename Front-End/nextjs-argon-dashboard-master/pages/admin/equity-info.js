@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 // import { myStxAddress  } from "../../components/auth";
 import { DataProts } from "../../../math";
 
@@ -22,47 +22,37 @@ import Admin from "layouts/Admin.js";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
 
-// function run() {
-
-//     // let HomeOwnerCal = new HomeOwner(50000, 500000, 5, 200000);
-//     // let WithDraws = new WithdrawlContract(1);
-
-//     // // Array Initialization
-
-//     // let DataProts = new Array(HomeOwnerCal.TermLength + 1);
-
-//     // for (let N = 0; N < HomeOwnerCal.TermLength + 1; N++) {
-//     //     DataProts[N] = new DataForProtocol();
-//     // }
-// }
+ 
 
 function EquityInfo() {
-    const init = {
-        ValueOfHome: " ",
-        TermLength: " ",
-        curMortBalance: " ",
-    };
-    const [formValues, setFormValues] = useState(init);
+
+    const [state, setState] = useState({
+        TermLength: "",
+        ValueOfHome: "",
+        CurrentMorgageBalance: ""
+      })
+
+    const handleChange = evt => {
+        const name = evt.target.name;
+        const value = evt.target.value;
+        setState({
+          ...state,
+          [name]: value
+        })
+      }
+
     const handleSubmit = (e) => {
-        e.preventDefault();
-        //let TermLength = document.querySelector("input-termlen").textContent;
-        console.log(formValues.TermLength);
-        //let ValueOfHome = document.querySelector("input-valhome").textContent;
-        console.log(formValues.ValueOfHome);
-        //let curMortBalance = document.querySelector("input-currMortBal").textContent;
-        console.log(formValues.curMortBalance);
+        e.preventDefault()
+        console.log(state);
+        // ... submit to API or something
     };
-    const handleChange = (a) => {
-        const { name, value } = a.target;
-        setFormValues({...formValues, [name]: value });
-    };
+
     return (
         <>
             {/* <UserHeader /> */}
             {/* Page content */}
             <Container className="mt--7" fluid>
                 <Row>
-
                     <Col className="order-xl-1" xl="8">
                         <Card className="bg-secondary shadow">
                             <CardHeader className="bg-black border-0">
@@ -83,7 +73,7 @@ function EquityInfo() {
                                 </Row>
                             </CardHeader>
                             <CardBody>
-                                <Form onSubmit={ handleSubmit }>
+                                <Form>
                                     <h6 className="heading-small text-muted mb-4">
                                         Equity Information
                                     </h6>
@@ -99,11 +89,11 @@ function EquityInfo() {
                                                     </label>
                                                     <Input
                                                         className="form-control-alternative"
-                                                        id="input-valhome"
+                                                        name="ValueOfHome"
                                                         placeholder="$ 230000"
-                                                        type="text"
-                                                        value={ formValues.ValueOfHome }
-                                                        onChange = { handleChange }
+                                                        type="number"
+                                                        value={ state.ValueOfHome } 
+                                                        onChange={handleChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -117,11 +107,11 @@ function EquityInfo() {
                                                     </label>
                                                     <Input
                                                         className="form-control-alternative"
-                                                        id="input-termlen"
+                                                        name="TermLength"
                                                         placeholder="5, 7, 10"
-                                                        type="text"
-                                                        value={ formValues.TermLength }
-                                                        onChange={ handleChange } 
+                                                        type="number"
+                                                        value={ state.TermLength } 
+                                                        onChange={handleChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -137,11 +127,11 @@ function EquityInfo() {
                                                     </label>
                                                     <Input
                                                         className="form-control-alternative"
-                                                        id="input-currMortBal"
+                                                        name="CurrentMorgageBalance"
                                                         placeholder="$ 400000"
-                                                        type="text"
-                                                        value={ formValues.curMortBalance }
-                                                        onChange={ handleChange }
+                                                        type="number"
+                                                        value={ state.CurrentMorgageBalance } 
+                                                        onChange={handleChange}
                                                     />
                                                 </FormGroup>
                                             </Col>
@@ -150,6 +140,7 @@ function EquityInfo() {
                                                     color="primary"
                                                     href="#pablo"
                                                     size="sm"
+                                                    onClick={handleSubmit}
                                                 >
                                                     Submit
                                                 </Button>
@@ -208,22 +199,3 @@ function EquityInfo() {
 EquityInfo.layout = Admin;
 
 export default EquityInfo;
-
-
-// Address, phone no, zip code, city, estate, 
-
-// math: TermLen, ValOfHom, curMortBalance
-
-// function DataForProtocol()
-// {
-//     this.Payment = 0;
-//     this.Balance = HomeOwnerCal.BtcToCot;
-//     this.AnuityWithdraw = 0;
-//     this.TxFee = 2.5;
-//     this.BTCYieldNFT = 0;
-//     this.NFTYieldUSD = 0;
-//     this.CotAppr = 0;
-//     this.NFTRevOptCall = (HomeOwnerCal.HomeEquity * this.CotAppr) + HomeOwnerCal.HomeEquity;
-//     this.OptCallFee = 0.05;
-//     this.ESTBTCPrice = HomeOwnerCal.PriceBTC;
-// }
