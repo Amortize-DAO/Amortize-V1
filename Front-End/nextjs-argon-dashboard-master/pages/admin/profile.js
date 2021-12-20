@@ -1,5 +1,5 @@
 import React from "react";
-import { myStxAddress  } from "../../components/auth";
+// import { myStxAddress  } from "../../components/auth";
 
 // reactstrap components
 import {
@@ -68,7 +68,7 @@ function Profile() {
                   </div>
                   <div className="h5 mt-4">
                     <i className="ni business_briefcase-24 mr-2" />
-                      {myStxAddress()}
+                      {/* {myStxAddress()} */}
                   </div>
                   
                 </div>

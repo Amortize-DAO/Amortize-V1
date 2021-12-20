@@ -2,6 +2,5 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
-  "/admin/tables": "pages/admin/tables.js",
-  "/auth/login": "pages/auth/login.js"
+  "/admin/equity-info": "pages/admin/equity-info.js"
 }

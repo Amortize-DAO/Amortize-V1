@@ -5,6 +5,18 @@ var routes = [
     icon: "ni ni-tv-2 text-primary",
     layout: "/admin",
   },
+  {
+    path: "/home-reg",
+    name: "Home Registration",
+    icon: "ni ni-circle-08 text-pink",
+    layout: "/admin",
+  },
+  {
+    path: "/equity-info",
+    name: "Equity Information",
+    icon: "ni ni-circle-08 text-pink",
+    layout: "/admin",
+  },
   // {
   //   path: "/icons",
   //   name: "Icons",

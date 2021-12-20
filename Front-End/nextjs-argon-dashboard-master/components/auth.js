@@ -19,9 +19,15 @@ export function networkType() {
 
 export function myStxAddress() {
   if(boolNetworkType)
-    return getUserData().profile.stxAddress.mainnet;
-  else 
-    return getUserData().profile.stxAddress.testnet;
+    if(getUserData() != null)
+      return getUserData().profile.stxAddress.mainnet;
+    else 
+      return "";
+  else
+    if(getUserData() != null)
+      return getUserData().profile.stxAddress.testnet;
+    else
+      return "";
 }
 
 export function authenticate() {
@@ -41,5 +47,9 @@ export function authenticate() {
 }
 
 export function getUserData() {
-  return userSession.loadUserData();
+  if(userSession.loadUserData() != undefined)
+    return userSession.loadUserData();
+  else
+    return null;
+  
 }

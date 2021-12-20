@@ -14,7 +14,7 @@ let WithDraws = new WithdrawlContract(1);
 
 // Array Initialization
 
-let DataProts = new Array(HomeOwnerCal.TermLength + 1);
+export let DataProts = new Array(HomeOwnerCal.TermLength + 1);
 
 for (let N = 0; N < HomeOwnerCal.TermLength + 1; N++)
 {
@@ -293,7 +293,7 @@ function printNFTInvest()
 
 CalculateDataProtocol();
 
-printDataProts();
+// printDataProts();
 
 CalculateAppreciation();
 
