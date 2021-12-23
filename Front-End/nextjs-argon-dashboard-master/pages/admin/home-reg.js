@@ -22,7 +22,7 @@ import UserHeader from "components/Headers/UserHeader.js";
 function HomeReg() {
   return (
     <>
-      {/* <UserHeader /> */}
+      <UserHeader />
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>
