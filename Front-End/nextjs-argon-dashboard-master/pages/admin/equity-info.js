@@ -1,6 +1,8 @@
 import React, { useRef } from "react";
 // import { myStxAddress  } from "../../components/auth";
-import { HomeOwner, WithdrawlContract, DataForProtocol, CalculateDataProtocol } from "../../../math";
+import { HomeOwner, WithdrawlContract, DataForProtocol, BTCAppreciate } from "../../../math";
+
+import { CalculateDataProtocol, CalculateAppreciation } from "../../../math";
 
 import { useState } from "react";
 // reactstrap components
@@ -53,20 +55,26 @@ function EquityInfo() {
         DataProts[N] = new DataForProtocol(HomeOwnerCal[0].BtcToCot, HomeOwnerCal[0].HomeEquity, HomeOwnerCal[0].PriceBTC);
     }
 
-    CalculateDataProtocol(DataProts, Withdrawal[0].RatePerPeriod, Withdrawal[0].AmortizeConstant, state.TermLength);
+    if (DataProts.length > 1)
+    {
+        CalculateDataProtocol(DataProts, Withdrawal[0].RatePerPeriod, Withdrawal[0].AmortizeConstant, state.TermLength);
+    }
+    
+    let BtcApp = new Array(HomeOwnerCal[0].TermLength + 1);
+
+    for (let N = 0; N < HomeOwnerCal[0].TermLength + 1; N++) {
+        BtcApp[N] = new BTCAppreciate(HomeOwnerCal[0].ValueOfHome, HomeOwnerCal[0].CurrMorBalance, DataProts[0].Balance, HomeOwnerCal[0].PriceBTC);
+    }
+
+    if (BtcApp.length > 1)
+    {
+        CalculateAppreciation(BtcApp, HomeOwnerCal[0], DataProts);
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log(state);
-        HomeOwnerCal[0] = new HomeOwner(50000, state.ValueOfHome, state.TermLength, state.CurrentMorgageBalance);
-        Withdrawal[0] = new WithdrawlContract(1, HomeOwnerCal[0].BtcToCot, state.TermLength);
-        let DataProts = new Array(HomeOwnerCal[0].TermLength + 1);
-
-        for (let N = 0; N < HomeOwnerCal[0].TermLength + 1; N++) {
-            DataProts[N] = new DataForProtocol(HomeOwnerCal[0].BtcToCot, HomeOwnerCal[0].HomeEquity, HomeOwnerCal[0].PriceBTC);
-        }
-
-        console.log(HomeOwnerCal[0].TermLength + 1);
+       
     };
 
     return (
@@ -82,16 +90,7 @@ function EquityInfo() {
                                     <Col xs="8">
                                         <h3 className="mb-0">Equity Information</h3>
                                     </Col>
-                                    <Col className="text-right" xs="4">
-                                        <Button
-                                            color="primary"
-                                            href="#pablo"
-                                            onClick={(e) => e.preventDefault()}
-                                            size="sm"
-                                        >
-                                            Settings
-                                        </Button>
-                                    </Col>
+                                    
                                 </Row>
                             </CardHeader>
                             <CardBody>
@@ -158,16 +157,7 @@ function EquityInfo() {
                                                 </FormGroup>
                                             </Col>
                                         </Row>
-                                        <Row className="text-right" xs="1">
-                                            <Button
-                                                color="primary"
-                                                href="#pablo"
-                                                size="sm"
-                                                onClick={handleSubmit}
-                                            >
-                                                Submit
-                                            </Button>
-                                        </Row>
+                                       
                                     </div>
 
                                 </Form>
@@ -255,6 +245,8 @@ function EquityInfo() {
                     </Col>
 
                 </Row>
+
+                {/* Data Protocols */}
                 <Row className="mt-5">
                     <Col className="mb-5 mb-xl-0" xl="12">
                         <Card className="shadow">
@@ -299,6 +291,54 @@ function EquityInfo() {
                                             <td>{DataProt.NFTRevOptCall}</td>
                                             <td>{DataProt.OptCallFee}</td>
                                             <td>{DataProt.ESTBTCPrice}</td>
+
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </Table>
+                        </Card>
+                    </Col>
+
+                </Row>
+                
+                {/* BTC Appreciation */}
+                <Row className="mt-5">
+                    <Col className="mb-5 mb-xl-0" xl="12">
+                        <Card className="shadow">
+                            <CardHeader className="border-0">
+                                <Row className="align-items-center">
+                                    <div className="col">
+                                        <h3 className="mb-0">BTC Appreciation</h3>
+                                    </div>
+
+                                </Row>
+                            </CardHeader>
+                            <Table className="align-items-center table-flush" responsive>
+                                <thead className="thead-light">
+                                    <tr>
+
+                                        <th scope="col">Year</th>
+                                        <th scope="col">HomeEquity</th>
+                                        <th scope="col">BTCinContract</th>
+                                        <th scope="col">ESTPriceBTC</th>
+                                        <th scope="col">ESTValCot</th>
+                                        <th scope="col">CotPrice</th>
+                                        <th scope="col">ESTProfit</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {BtcApp.map((BtcApp, index) =>
+
+                                        <tr>
+                                            <th scope="row">{index}</th>
+                                            <td>{BtcApp.HomeEquity}</td>
+                                            <td>{BtcApp.BTCinContract}</td>
+                                            <td>{BtcApp.ESTPriceBTC}</td>
+                                            <td>{BtcApp.ESTValCot}</td>
+                                            <td>{BtcApp.CotPrice}</td>
+
+                                            <td>{BtcApp.ESTProfit}</td>
 
                                         </tr>
                                     )}
