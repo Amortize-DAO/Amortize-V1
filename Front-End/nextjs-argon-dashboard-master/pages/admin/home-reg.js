@@ -41,7 +41,7 @@ function HomeReg() {
                       onClick={(e) => e.preventDefault()}
                       size="sm"
                     >
-                      Settings
+                      Submit
                     </Button>
                   </Col>
                 </Row>

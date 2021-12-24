@@ -26,15 +26,15 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/admin/dashboard": [
+    "/admin/home-reg": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/admin/dashboard.js"
+      "static/chunks/pages/admin/home-reg.js"
     ],
-    "/admin/equity-info": [
+    "/admin/profile": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/admin/equity-info.js"
+      "static/chunks/pages/admin/profile.js"
     ]
   },
   "ampFirstPages": []

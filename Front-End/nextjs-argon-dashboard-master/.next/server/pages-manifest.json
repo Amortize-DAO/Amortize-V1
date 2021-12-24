@@ -2,6 +2,6 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
-  "/admin/dashboard": "pages/admin/dashboard.js",
-  "/admin/equity-info": "pages/admin/equity-info.js"
+  "/admin/profile": "pages/admin/profile.js",
+  "/admin/home-reg": "pages/admin/home-reg.js"
 }
