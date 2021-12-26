@@ -6,7 +6,7 @@
 
 ;; data maps and vars
 (define-data-var v-share uint u0)
-(define-data-var beneficiaries (list 10 principal) (list tx-sender))
+(define-data-var beneficiaries (list 10 principal) (list))
 
 
 ;; private functions
@@ -22,9 +22,8 @@
 )
 
 ;; public functions
-(define-public (multi-claim (beneficiant (list 10 principal)))
+(define-public (multi-claim)
     (begin
-        (var-set beneficiaries beneficiant)
         (try! (as-contract (contract-call? .btc-lock claim)))
         (let
             (
@@ -37,5 +36,12 @@
             (try! (as-contract (stx-transfer? (stx-get-balance tx-sender) tx-sender (unwrap-panic (element-at (var-get beneficiaries) (- (len (var-get beneficiaries)) u1))))))
             (ok true)
         )
+    )
+)
+
+(define-public (add-beneficiary (beneficiant principal))
+    (if (< (len (var-get beneficiaries)) u10)
+        (ok (unwrap-panic (as-max-len? (append (var-get beneficiaries) beneficiant) u10)))
+        (err (var-get beneficiaries))
     )
 )

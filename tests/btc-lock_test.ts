@@ -78,3 +78,76 @@ Clarinet.test({
         assertEquals(block.receipts[0].events.length, 0);
     }
 });
+
+Clarinet.test({
+    name: "Allows the beneficiary to claim the balance when the block-height is reached",
+    async fn(chain: Chain, accounts: Map<string, Account>) {
+        const deployer = accounts.get('deployer')!;
+        const beneficiary = accounts.get('wallet_1')!;
+        const targetBlockHeight = 10;
+        const amount = 10;
+        chain.mineBlock([
+            Tx.contractCall('btc-lock', 'lock', [types.principal(beneficiary.address), types.uint(targetBlockHeight), types.uint(amount)], deployer.address),
+        ]);
+
+        // Advance the chain until the unlock height.
+        chain.mineEmptyBlockUntil(targetBlockHeight);
+
+        const block = chain.mineBlock([
+            Tx.contractCall('btc-lock', 'claim', [], beneficiary.address),
+        ]);
+
+        // The claim was successful and the STX were transferred.
+        block.receipts[0].result.expectOk().expectBool(true);
+        block.receipts[0].events.expectSTXTransferEvent(amount, `${deployer.address}.btc-lock`, beneficiary.address);
+    }
+});
+
+Clarinet.test({
+    name: "Does not allow the beneficiary to claim the balance before the block-height is reached",
+    async fn(chain: Chain, accounts: Map<string, Account>) {
+        const deployer = accounts.get('deployer')!;
+        const beneficiary = accounts.get('wallet_1')!;
+        const targetBlockHeight = 10;
+        const amount = 10;
+        chain.mineBlock([
+            Tx.contractCall('btc-lock', 'lock', [types.principal(beneficiary.address), types.uint(targetBlockHeight), types.uint(amount)], deployer.address),
+        ]);
+
+        // Advance the chain until the unlock height minus one.
+        chain.mineEmptyBlockUntil(targetBlockHeight - 1);
+
+        const block = chain.mineBlock([
+            Tx.contractCall('btc-lock', 'claim', [], beneficiary.address),
+        ]);
+
+        // Should return err-unlock-height-not-reached (err u105).
+        block.receipts[0].result.expectErr().expectUint(105);
+        assertEquals(block.receipts[0].events.length, 0);
+    }
+});
+
+Clarinet.test({
+    name: "Does not allow anyone else to claim the balance when the block-height is reached",
+    async fn(chain: Chain, accounts: Map<string, Account>) {
+        const deployer = accounts.get('deployer')!;
+        const beneficiary = accounts.get('wallet_1')!;
+        const other = accounts.get('wallet_2')!;
+        const targetBlockHeight = 10;
+        const amount = 10;
+        chain.mineBlock([
+            Tx.contractCall('btc-lock', 'lock', [types.principal(beneficiary.address), types.uint(targetBlockHeight), types.uint(amount)], deployer.address),
+        ]);
+
+        // Advance the chain until the unlock height.
+        chain.mineEmptyBlockUntil(targetBlockHeight);
+
+        const block = chain.mineBlock([
+            Tx.contractCall('btc-lock', 'claim', [], other.address),
+        ]);
+
+        // Should return err-beneficiary-only (err u104).
+        block.receipts[0].result.expectErr().expectUint(104);
+        assertEquals(block.receipts[0].events.length, 0);
+    }
+});
