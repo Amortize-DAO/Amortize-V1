@@ -6,6 +6,14 @@ costs_version = 1
 path = "contracts/Amortize-V1.clar"
 depends_on = []
 
+[contracts.btc-lock]
+path = "contracts/btc-lock.clar"
+depends_on = []
+
+[contracts.equity-multi-claim]
+path = "contracts/equity-multi-claim.clar"
+depends_on = []
+
 [contracts.math]
 path = "contracts/math.clar"
 depends_on = []
