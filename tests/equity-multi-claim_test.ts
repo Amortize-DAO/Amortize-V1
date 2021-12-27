@@ -30,7 +30,22 @@ Clarinet.test({
         // Take the first receipt.
         const [receipt] = block.receipts;
         // The claim should be successful.
-        receipt.result.expectOk().expectBool(true);
+        block.receipts[0].result
+        .expectOk()
+        .expectList();
+
+        block.receipts[1].result
+        .expectOk()
+        .expectList();
+
+        block.receipts[2].result
+        .expectOk()
+        .expectList();
+
+        block.receipts[3].result
+        .expectOk()
+        .expectList();
+
 
         // All wallets should have received their share.
         receipt.events.expectSTXTransferEvent(share, beneficiary, wallet1.address);

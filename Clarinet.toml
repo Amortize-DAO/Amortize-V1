@@ -12,7 +12,7 @@ depends_on = []
 
 [contracts.equity-multi-claim]
 path = "contracts/equity-multi-claim.clar"
-depends_on = []
+depends_on = ["btc-lock"]
 
 [contracts.math]
 path = "contracts/math.clar"
@@ -29,3 +29,4 @@ depends_on = []
 [contracts.nft-minting]
 path = "contracts/nft-minting.clar"
 depends_on = []
+

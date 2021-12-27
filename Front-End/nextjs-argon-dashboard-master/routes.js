@@ -17,6 +17,12 @@ var routes = [
     icon: "ni ni-circle-08 text-pink",
     layout: "/admin",
   },
+  {
+    path: "/agent-select",
+    name: "Agent Ownership",
+    icon: "ni ni-circle-08 text-pink",
+    layout: "/admin",
+  },
   // {
   //   path: "/icons",
   //   name: "Icons",

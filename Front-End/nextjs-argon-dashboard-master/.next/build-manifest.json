@@ -26,11 +26,6 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/admin/home-reg": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/admin/home-reg.js"
-    ],
     "/admin/profile": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",

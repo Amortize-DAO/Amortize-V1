@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import { myStxAddress  } from "../../components/auth";
+
+
 // reactstrap components
 import {
   DropdownMenu,
@@ -17,6 +20,7 @@ import {
   Container,
   Media,
 } from "reactstrap";
+import { StacksTestnet } from "@stacks/network";
 
 function AdminNavbar({ brandText }) {
   return (
@@ -52,7 +56,7 @@ function AdminNavbar({ brandText }) {
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
-                      Jessica Jones
+                      {myStxAddress()}
                     </span>
                   </Media>
                 </Media>

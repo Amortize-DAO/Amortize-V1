@@ -40,7 +40,6 @@ export function authenticate() {
     onFinish: () => {
       // Get Access rights from smart contract
       window.location.assign("/admin/profile");
-     
     },
     userSession: userSession,
   });

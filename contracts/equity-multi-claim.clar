@@ -1,4 +1,3 @@
-
 ;; equity-multi-claim
 ;; <add a description here>
 
@@ -6,6 +5,7 @@
 
 ;; data maps and vars
 (define-data-var v-share uint u0)
+(define-data-var add-to-remove (optional principal) none)
 (define-data-var beneficiaries (list 10 principal) (list))
 
 
@@ -32,16 +32,23 @@
                 (share (/ total-balance (len (var-get beneficiaries))))
             )
             (var-set v-share share)
-            (filter distribute second-last)
-            (try! (as-contract (stx-transfer? (stx-get-balance tx-sender) tx-sender (unwrap-panic (element-at (var-get beneficiaries) (- (len (var-get beneficiaries)) u1))))))
+            ;;(filter distribute second-last)
+            ;;(try! (as-contract (stx-transfer? (stx-get-balance tx-sender) tx-sender (unwrap-panic (element-at (var-get beneficiaries) (- (len (var-get beneficiaries)) u1))))))
             (ok true)
         )
     )
 )
 
+(define-private (remove-duplicate (address principal))
+    (not (is-eq address (unwrap-panic (var-get add-to-remove))))
+)
+
 (define-public (add-beneficiary (beneficiant principal))
-    (if (< (len (var-get beneficiaries)) u10)
-        (ok (unwrap-panic (as-max-len? (append (var-get beneficiaries) beneficiant) u10)))
-        (err (var-get beneficiaries))
+    (begin
+        (asserts! (< (len (var-get beneficiaries)) u10) (err (var-get beneficiaries)))
+        (var-set add-to-remove (some beneficiant))
+        (var-set beneficiaries (filter remove-duplicate (var-get beneficiaries)))
+        (var-set beneficiaries (unwrap-panic (as-max-len? (append (var-get beneficiaries) beneficiant) u10)))
+        (ok (var-get beneficiaries))
     )
 )

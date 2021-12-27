@@ -1,5 +1,7 @@
 import React from "react";
-// import { myStxAddress  } from "../../components/auth";
+import { myStxAddress  } from "../../components/auth";
+
+import { useState } from "react";
 
 // reactstrap components
 import {
@@ -20,6 +22,31 @@ import Admin from "layouts/Admin.js";
 import UserHeader from "components/Headers/UserHeader.js";
 
 function Profile() {
+
+  const [state, setState] = useState({
+    Username: "",
+    EmailAddress: "",
+    FirstName: "",
+    LastName: ""
+  })
+
+  // let submitted = false;
+
+  const handleChange = evt => {
+    const name = evt.target.name;
+    const value = evt.target.value;
+    setState({
+      ...state,
+      [name]: value
+    })
+  }
+
+  const handleSubmit = (e) => {
+    // submitted = true;
+    e.preventDefault()
+    console.log(state);
+  };
+
   return (
     <>
       <UserHeader />
@@ -35,19 +62,19 @@ function Profile() {
                       <img
                         alt="..."
                         className="rounded-circle"
-                        src={require("assets/img/theme/team-4-800x800.jpg")}
+                        // src={require("assets/img/theme/team-4-800x800.jpg")}
                       />
                     </a>
                   </div>
                 </Col>
               </Row>
-              
+
               <CardBody className="pt-0 pt-md-4">
                 <Row>
                   <div className="col">
                     <div className="card-profile-stats d-flex justify-content-center mt-md-5">
                       <div>
-                        <span className="heading">22</span>
+                        <span className="heading"></span>
                         <span className="description">Property Minted</span>
                       </div>
                       <div>
@@ -59,18 +86,20 @@ function Profile() {
                 </Row>
                 <div className="text-center">
                   <h3>
-                    Jessica Jones
-                    <span className="font-weight-light">, 27</span>
+                    {state.FirstName} {state.LastName}
                   </h3>
+                  <h4>
+                    <span className="font-weight-light"> {state.Username}</span>
+                  </h4>
                   <div className="h5 font-weight-300">
                     <i className="ni location_pin mr-2" />
-                    Bucharest, Romania
+                    {state.EmailAddress}
                   </div>
                   <div className="h5 mt-4">
                     <i className="ni business_briefcase-24 mr-2" />
-                      {/* {myStxAddress()} */}
+                    {myStxAddress()}
                   </div>
-                  
+
                 </div>
               </CardBody>
             </Card>
@@ -86,10 +115,10 @@ function Profile() {
                     <Button
                       color="primary"
                       href="#pablo"
-                      onClick={(e) => e.preventDefault()}
+                      onClick={handleSubmit}
                       size="sm"
                     >
-                      Settings
+                      Submit
                     </Button>
                   </Col>
                 </Row>
@@ -111,10 +140,11 @@ function Profile() {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="lucky.jesse"
                             id="input-username"
                             placeholder="Username"
                             type="text"
+                            name= "Username"
+                            onChange={handleChange}
                           />
                         </FormGroup>
                       </Col>
@@ -131,6 +161,8 @@ function Profile() {
                             id="input-email"
                             placeholder="jesse@example.com"
                             type="email"
+                            name="EmailAddress"
+                            onChange={handleChange}
                           />
                         </FormGroup>
                       </Col>
@@ -146,10 +178,11 @@ function Profile() {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="Lucky"
                             id="input-first-name"
                             placeholder="First name"
                             type="text"
+                            name="FirstName"
+                            onChange={handleChange}
                           />
                         </FormGroup>
                       </Col>
@@ -163,16 +196,17 @@ function Profile() {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="Jesse"
                             id="input-last-name"
                             placeholder="Last name"
                             type="text"
+                            name="LastName"
+                            onChange={handleChange}
                           />
                         </FormGroup>
                       </Col>
                     </Row>
                   </div>
-              
+
                 </Form>
               </CardBody>
             </Card>
