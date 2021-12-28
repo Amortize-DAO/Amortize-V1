@@ -91,9 +91,9 @@ function AdminNavbar({ brandText }) {
                   </DropdownItem>
                 </Link>
                 <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={Signout()}>
+                <DropdownItem>
                   <i className="ni ni-user-run" />
-                  <span>Logout</span>
+                  <span onClick={Signout}>Logout</span>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>

@@ -1,5 +1,14 @@
 import React from "react";
 // import { myStxAddress  } from "../../components/auth";
+import { useState } from "react";
+
+import { saveHomeInfo } from "../../components/home-reg";
+
+import { fetchHomeInfo } from "../../components/home-reg";
+
+import { userSession } from "../../components/auth";
+
+import { v4 as uuid } from "uuid";
 
 // reactstrap components
 import {
@@ -19,7 +28,67 @@ import Admin from "layouts/Admin.js";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
 
+let triedFetching = false;
+
 function HomeReg() {
+
+  const [state, setState] = useState({
+    Address: "",
+    Phone: "",
+    Zipcode: "",
+    City: "",
+    Estate: ""
+  });
+
+  if (!triedFetching) {
+    fetchHomeInfo(userSession).then((homeinfo) => {
+      setState({
+        Address: homeinfo.Address,
+        Phone: homeinfo.Phone,
+        Zipcode: homeinfo.Zipcode,
+        City: homeinfo.City,
+        Estate: homeinfo.Estate
+      });
+      
+    });
+    triedFetching = true;
+    console.log("Tried Fetching");
+  }
+
+  const handleChange = (evt) => {
+    const name = evt.target.name;
+    const value = evt.target.value;
+    setState({
+      ...state,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    console.log(state);
+
+    const HomeInfo = {
+      Address: state.Address,
+      Phone: state.Phone,
+      Zipcode: state.Zipcode,
+      City: state.City,
+      Estate: state.Estate,
+      id: uuid(),
+    };
+
+    if (userSession.isUserSignedIn()) {
+      saveHomeInfo(HomeInfo).then((result) => {
+        console.log(result);
+      });
+    }
+    else
+    {
+      console.log('User is not Signed in!');
+    }
+  }
+
   return (
     <>
       <UserHeader />
@@ -38,7 +107,7 @@ function HomeReg() {
                     <Button
                       color="primary"
                       href="#pablo"
-                      onClick={(e) => e.preventDefault()}
+                      onClick={handleSubmit}
                       size="sm"
                     >
                       Submit
@@ -66,6 +135,9 @@ function HomeReg() {
                             id="input-address"
                             placeholder="House no. 23, UC Berkley, USA"
                             type="text"
+                            name="Address"
+                            onChange={handleChange}
+                            defaultValue={state.Address}
                           />
                         </FormGroup>
                       </Col>
@@ -82,6 +154,9 @@ function HomeReg() {
                             id="input-phoneno"
                             placeholder="+2135454544"
                             type="text"
+                            name="Phone"
+                            onChange={handleChange}
+                            defaultValue={state.Phone}
                           />
                         </FormGroup>
                       </Col>
@@ -100,6 +175,9 @@ function HomeReg() {
                             id="input-zipcode"
                             placeholder="21100"
                             type="number"
+                            name="Zipcode"
+                            onChange={handleChange}
+                            defaultValue={state.Zipcode}
                           />
                         </FormGroup>
                       </Col>
@@ -116,6 +194,9 @@ function HomeReg() {
                             id="input-city"
                             placeholder="New York"
                             type="text"
+                            name="City"
+                            onChange={handleChange}
+                            defaultValue={state.City}
                           />
                         </FormGroup>
                       </Col>
@@ -132,6 +213,9 @@ function HomeReg() {
                             id="input-estate"
                             placeholder="Albama"
                             type="text"
+                            name="Estate"
+                            onChange={handleChange}
+                            defaultValue={state.Estate}
                           />
                         </FormGroup>
                       </Col>
