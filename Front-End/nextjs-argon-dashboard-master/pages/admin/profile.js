@@ -1,7 +1,17 @@
 import React from "react";
-import { myStxAddress  } from "../../components/auth";
+// import { myStxAddress, userSession  } from "../../components/auth";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+import { saveUserInfo } from "../../components/profile";
+
+import { fetchUserInfo } from "../../components/profile";
+
+import { userSession } from "../../components/auth";
+
+import { v4 as uuid } from 'uuid';
+
+
 
 // reactstrap components
 import {
@@ -22,6 +32,25 @@ import Admin from "layouts/Admin.js";
 import UserHeader from "components/Headers/UserHeader.js";
 
 function Profile() {
+  
+  // let userinfo = fetchUserInfo(userSession);
+  // if (userinfo != null) {
+  //   console.log(userinfo);
+  // }
+
+  // fetchUserInfo(userSession).then(result => {
+  //   console.log(result.userinfo[0].Username);
+  // })
+
+  // fetchUserInfo(userSession).then(result => {
+  //   for (let i = 0; i < result.userinfo.length; i++) {
+  //     setState({
+  //       ...state,
+  //       [result.userinfo]: value
+  //     })
+  //   }
+  // })
+
 
   const [state, setState] = useState({
     Username: "",
@@ -29,6 +58,36 @@ function Profile() {
     FirstName: "",
     LastName: ""
   })
+
+  // fetchUserInfo(userSession).resolve(result => {
+  //   if (state.Username == "")
+  //     setState({
+  //       Username: result.userinfo[0].Username,
+  //       EmailAddress: result.userinfo[0].EmailAddress,
+  //       FirstName: result.userinfo[0].FirstName,
+  //       LastName: result.userinfo[0].LastName,
+
+  //     });
+
+  // })
+
+  useEffect(() => {
+    const doFetchUserInfo = async () => {
+      const response = await fetchUserInfo(userSession);
+      if (response.userinfo === null) {
+        // setNotFound(true);
+      } else {
+        setState({
+          Username: response.userinfo[0].Username,
+          EmailAddress: response.userinfo[0].EmailAddress,
+          FirstName: response.userinfo[0].FirstName,
+          LastName: response.userinfo[0].LastName,
+
+        });
+      }
+    };
+    doFetchUserInfo();
+  }, []);
 
   // let submitted = false;
 
@@ -45,6 +104,37 @@ function Profile() {
     // submitted = true;
     e.preventDefault()
     console.log(state);
+    const UserInfo = [
+      {
+        // complete: false,
+        Username: state.Username,
+        EmailAddress: state.EmailAddress,
+        FirstName: state.FirstName,
+        LastName: state.LastName,
+        // id: uuid()
+      },
+    ];
+    void saveUserInfo(userSession, UserInfo, false);
+    // useEffect(() => {
+    //   const doSaveUserInfo = async () => {
+    //     const response = await saveUserInfo(userSession, UserInfo, false);
+    //     if (response === null) {
+    //       console.log("whatssup");
+    //     }
+    //     // } else {
+    //     //   setState({
+    //     //     Username: response.userinfo[0].Username,
+    //     //     EmailAddress: response.userinfo[0].EmailAddress,
+    //     //     FirstName: response.userinfo[0].FirstName,
+    //     //     LastName: response.userinfo[0].LastName,
+
+    //     //   });
+    //     // }
+    //   };
+    //   doSaveUserInfo();
+    // }, []);
+    // state.Username = "";
+    // state = fetchUserInfo(userSession);
   };
 
   return (
@@ -62,7 +152,7 @@ function Profile() {
                       <img
                         alt="..."
                         className="rounded-circle"
-                        // src={require("assets/img/theme/team-4-800x800.jpg")}
+                      // src={require("assets/img/theme/team-4-800x800.jpg")}
                       />
                     </a>
                   </div>
@@ -97,7 +187,7 @@ function Profile() {
                   </div>
                   <div className="h5 mt-4">
                     <i className="ni business_briefcase-24 mr-2" />
-                    {myStxAddress()}
+                    {/* {myStxAddress()} */}
                   </div>
 
                 </div>
@@ -143,8 +233,10 @@ function Profile() {
                             id="input-username"
                             placeholder="Username"
                             type="text"
-                            name= "Username"
+                            name="Username"
                             onChange={handleChange}
+                            // value={state.Username}
+                            defaultValue={state.Username}
                           />
                         </FormGroup>
                       </Col>
@@ -163,6 +255,8 @@ function Profile() {
                             type="email"
                             name="EmailAddress"
                             onChange={handleChange}
+                            // value={state.EmailAddress}
+                            defaultValue={state.EmailAddress}
                           />
                         </FormGroup>
                       </Col>
@@ -183,6 +277,8 @@ function Profile() {
                             type="text"
                             name="FirstName"
                             onChange={handleChange}
+                            // value={state.FirstName}
+                            defaultValue={state.FirstName}
                           />
                         </FormGroup>
                       </Col>
@@ -201,6 +297,8 @@ function Profile() {
                             type="text"
                             name="LastName"
                             onChange={handleChange}
+                            // value={state.LastName}
+                            defaultValue={state.LastName}
                           />
                         </FormGroup>
                       </Col>
