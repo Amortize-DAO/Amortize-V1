@@ -70,7 +70,7 @@ export const defaultUserInfo = [
     EmailAddress: "",
     FirstName: "",
     LastName: "",
-    // id: uuid()
+    id: uuid()
   },
 ];
 
