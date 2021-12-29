@@ -53,15 +53,15 @@ export function HomeOwner(PriceBTC, ValueOfHome, TermLength, CurrMorBalance) {
 export function WithdrawlContract(PaymentFrequency, BtcToCot, TermLength) {
     this.BTCAmount = BtcToCot;
 
-    if (TermLength === '10') {
+    if (TermLength === 10) {
         this.AmortizeRate = 15;
     }
 
-    else if (TermLength === '7') {
+    else if (TermLength === 7) {
         this.AmortizeRate = 18;
     }
 
-    else if (TermLength === '5') {
+    else if (TermLength === 5) {
         this.AmortizeRate = 23;
     }
 
@@ -277,7 +277,7 @@ function printNFTInvest() {
 
 CalculateDataProtocol();
 
-printDataProts();
+// printDataProts();
 
 CalculateAppreciation();
 

@@ -5,6 +5,15 @@ import { HomeOwner, WithdrawlContract, DataForProtocol, BTCAppreciate } from "..
 import { CalculateDataProtocol, CalculateAppreciation } from "../../../math";
 
 import { useState } from "react";
+
+import { saveEquityInfo } from "../../components/equity-info";
+
+import { fetchEquityInfo } from "../../components/equity-info";
+
+import { userSession } from "../../components/auth";
+
+import { v4 as uuid } from "uuid";
+
 // reactstrap components
 import {
     Button,
@@ -24,17 +33,18 @@ import Admin from "layouts/Admin.js";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
 
+import Slide from "components/Sliders/Slide.js"
 
+let triedFetching = false;
 
 function EquityInfo() {
 
     const [state, setState] = useState({
-        TermLength: "",
         ValueOfHome: "",
         CurrentMorgageBalance: ""
-    })
-
-    let submitted = false;
+    });
+ 
+    const [SliderState, SliderSetState] = useState(5);
 
     const handleChange = evt => {
         const name = evt.target.name;
@@ -43,13 +53,27 @@ function EquityInfo() {
             ...state,
             [name]: value
         })
-    }
+    };
+
+    if (!triedFetching) {
+        fetchEquityInfo(userSession).then((equityinfo) => {
+          setState({
+            ValueOfHome: equityinfo.ValueOfHome,
+            CurrentMorgageBalance: equityinfo.CurrentMorgageBalance
+          });
+
+          SliderSetState(equityinfo.TermLength);
+          
+        });
+        triedFetching = true;
+        console.log("Tried Fetching");
+      }
 
     let HomeOwnerCal = new Array(1);
-    HomeOwnerCal[0] = new HomeOwner(50000, state.ValueOfHome, state.TermLength, state.CurrentMorgageBalance);
+    HomeOwnerCal[0] = new HomeOwner(50000, state.ValueOfHome, SliderState, state.CurrentMorgageBalance);
 
     let Withdrawal = new Array(1);
-    Withdrawal[0] = new WithdrawlContract(1, HomeOwnerCal[0].BtcToCot, state.TermLength);
+    Withdrawal[0] = new WithdrawlContract(1, HomeOwnerCal[0].BtcToCot, SliderState);
 
     let DataProts = new Array(HomeOwnerCal[0].TermLength + 1);
 
@@ -58,7 +82,7 @@ function EquityInfo() {
     }
 
     if (DataProts.length > 1) {
-        CalculateDataProtocol(DataProts, Withdrawal[0].RatePerPeriod, Withdrawal[0].AmortizeConstant, state.TermLength);
+        CalculateDataProtocol(DataProts, Withdrawal[0].RatePerPeriod, Withdrawal[0].AmortizeConstant, SliderState);
     }
 
     let BtcApp = new Array(HomeOwnerCal[0].TermLength + 1);
@@ -72,28 +96,25 @@ function EquityInfo() {
     }
 
     const handleSubmit = (e) => {
-        submitted = true;
         e.preventDefault()
-        console.log(state);
+    
+        const EquityInfo = {
+            ValueOfHome: state.ValueOfHome,
+            CurrentMorgageBalance: state.CurrentMorgageBalance,
+            TermLength: SliderState,
+            id: uuid(),
+          };
+      
+          if (userSession.isUserSignedIn()) {
+            saveEquityInfo(EquityInfo).then((result) => {
+              console.log(result);
+            });
+          }
+          else
+          {
+            console.log('User is not Signed in!');
+          }
     };
-
-    function showHom (){
-        if (submitted === true)
-        {
-            return
-            {HomeOwnerCal.map(HomeOwn =>
-                <tr>
-                    <th scope="row">{HomeOwn.PriceBTC}</th>
-                    <td>{HomeOwn.ValueOfHome}</td>
-                    <td>{HomeOwn.TermLength}</td>
-                    <td>{HomeOwn.CurrMorBalance}</td>
-                    <td>{HomeOwn.HomeEquity}</td>
-                    <td>{HomeOwn.BtcToCot}</td>
-
-                </tr>
-            )}
-        }
-    }
 
     return (
         <>
@@ -140,7 +161,7 @@ function EquityInfo() {
                                                         name="ValueOfHome"
                                                         placeholder="$ 230000"
                                                         type="number"
-                                                        value={state.ValueOfHome}
+                                                        defaultValue={state.ValueOfHome}
                                                         onChange={handleChange}
                                                     />
                                                 </FormGroup>
@@ -153,14 +174,15 @@ function EquityInfo() {
                                                     >
                                                         Term Length
                                                     </label>
-                                                    <Input
+                                                    {/* <Input
                                                         className="form-control-alternative"
                                                         name="TermLength"
                                                         placeholder="5, 7, 10"
                                                         type="number"
                                                         value={state.TermLength}
                                                         onChange={handleChange}
-                                                    />
+                                                    /> */}
+                                                     <Slide set={SliderSetState}/>
                                                 </FormGroup>
                                             </Col>
                                         </Row>
@@ -178,7 +200,7 @@ function EquityInfo() {
                                                         name="CurrentMorgageBalance"
                                                         placeholder="$ 400000"
                                                         type="number"
-                                                        value={state.CurrentMorgageBalance}
+                                                        defaultValue={state.CurrentMorgageBalance}
                                                         onChange={handleChange}
                                                     />
                                                 </FormGroup>
@@ -215,7 +237,7 @@ function EquityInfo() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    { showHom/* {HomeOwnerCal.map(HomeOwn =>
+                                    {HomeOwnerCal.map(HomeOwn =>
                                         <tr>
                                             <th scope="row">{HomeOwn.PriceBTC}</th>
                                             <td>{HomeOwn.ValueOfHome}</td>
@@ -225,7 +247,7 @@ function EquityInfo() {
                                             <td>{HomeOwn.BtcToCot}</td>
 
                                         </tr>
-                                    )} */}
+                                    )}
                                 </tbody>
                             </Table>
                         </Card>

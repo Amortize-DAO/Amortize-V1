@@ -1,7 +1,7 @@
 import React from "react";
 // import { myStxAddress, userSession  } from "../../components/auth";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { saveUserInfo } from "../../components/profile";
 
@@ -9,9 +9,7 @@ import { fetchUserInfo } from "../../components/profile";
 
 import { userSession } from "../../components/auth";
 
-import { v4 as uuid } from 'uuid';
-
-
+import { v4 as uuid } from "uuid";
 
 // reactstrap components
 import {
@@ -31,110 +29,60 @@ import Admin from "layouts/Admin.js";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
 
+let triedFetching = false;
+
 function Profile() {
-  
-  // let userinfo = fetchUserInfo(userSession);
-  // if (userinfo != null) {
-  //   console.log(userinfo);
-  // }
-
-  // fetchUserInfo(userSession).then(result => {
-  //   console.log(result.userinfo[0].Username);
-  // })
-
-  // fetchUserInfo(userSession).then(result => {
-  //   for (let i = 0; i < result.userinfo.length; i++) {
-  //     setState({
-  //       ...state,
-  //       [result.userinfo]: value
-  //     })
-  //   }
-  // })
-
-
   const [state, setState] = useState({
     Username: "",
     EmailAddress: "",
     FirstName: "",
-    LastName: ""
-  })
+    LastName: "",
+  });
 
-  // fetchUserInfo(userSession).resolve(result => {
-  //   if (state.Username == "")
-  //     setState({
-  //       Username: result.userinfo[0].Username,
-  //       EmailAddress: result.userinfo[0].EmailAddress,
-  //       FirstName: result.userinfo[0].FirstName,
-  //       LastName: result.userinfo[0].LastName,
+  if (!triedFetching) {
+    fetchUserInfo(userSession).then((userinfo) => {
+      setState({
+        Username: userinfo.Username,
+        EmailAddress: userinfo.EmailAddress,
+        FirstName: userinfo.FirstName,
+        LastName: userinfo.LastName,
+      });
+    });
+    triedFetching = true;
+    console.log("Tried Fetching");
+  }
 
-  //     });
-
-  // })
-
-  useEffect(() => {
-    const doFetchUserInfo = async () => {
-      const response = await fetchUserInfo(userSession);
-      if (response.userinfo === null) {
-        // setNotFound(true);
-      } else {
-        setState({
-          Username: response.userinfo[0].Username,
-          EmailAddress: response.userinfo[0].EmailAddress,
-          FirstName: response.userinfo[0].FirstName,
-          LastName: response.userinfo[0].LastName,
-
-        });
-      }
-    };
-    doFetchUserInfo();
-  }, []);
-
-  // let submitted = false;
-
-  const handleChange = evt => {
+  const handleChange = (evt) => {
     const name = evt.target.name;
     const value = evt.target.value;
     setState({
       ...state,
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
 
   const handleSubmit = (e) => {
-    // submitted = true;
-    e.preventDefault()
-    console.log(state);
-    const UserInfo = [
-      {
-        // complete: false,
-        Username: state.Username,
-        EmailAddress: state.EmailAddress,
-        FirstName: state.FirstName,
-        LastName: state.LastName,
-        // id: uuid()
-      },
-    ];
-    void saveUserInfo(userSession, UserInfo, false);
-    // useEffect(() => {
-    //   const doSaveUserInfo = async () => {
-    //     const response = await saveUserInfo(userSession, UserInfo, false);
-    //     if (response === null) {
-    //       console.log("whatssup");
-    //     }
-    //     // } else {
-    //     //   setState({
-    //     //     Username: response.userinfo[0].Username,
-    //     //     EmailAddress: response.userinfo[0].EmailAddress,
-    //     //     FirstName: response.userinfo[0].FirstName,
-    //     //     LastName: response.userinfo[0].LastName,
+    e.preventDefault();
 
-    //     //   });
-    //     // }
-    //   };
-    //   doSaveUserInfo();
-    // }, []);
-    // state.Username = "";
-    // state = fetchUserInfo(userSession);
+    console.log(state);
+
+    const UserInfo = {
+      Username: state.Username,
+      EmailAddress: state.EmailAddress,
+      FirstName: state.FirstName,
+      LastName: state.LastName,
+      id: uuid(),
+    };
+
+    if (userSession.isUserSignedIn()) {
+      saveUserInfo(UserInfo).then((result) => {
+        console.log(result);
+      });
+    }
+    else
+    {
+      console.log('User is not Signed in!');
+    }
   };
 
   return (
@@ -152,7 +100,7 @@ function Profile() {
                       <img
                         alt="..."
                         className="rounded-circle"
-                      // src={require("assets/img/theme/team-4-800x800.jpg")}
+                        // src={require("assets/img/theme/team-4-800x800.jpg")}
                       />
                     </a>
                   </div>
@@ -189,7 +137,6 @@ function Profile() {
                     <i className="ni business_briefcase-24 mr-2" />
                     {/* {myStxAddress()} */}
                   </div>
-
                 </div>
               </CardBody>
             </Card>
@@ -304,7 +251,6 @@ function Profile() {
                       </Col>
                     </Row>
                   </div>
-
                 </Form>
               </CardBody>
             </Card>

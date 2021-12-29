@@ -53,6 +53,8 @@ function Profile() {
         console.log(state);
     };
 
+    const agents = ["Ali", "Ummar", "James"];
+
     // const dropdown = {
     //     color: 'white',
     //     FontFace: 
@@ -65,7 +67,7 @@ function Profile() {
             <Container className="mt--7" fluid>
                 <Row>
 
-                    <Col className="order-xl-1" xl="8">
+                    <Col className="order-xl-1" xl="12">
                         <Card className="bg-secondary shadow">
                             <CardHeader className="bg-white border-0">
                                 <Row className="align-items-center">
@@ -105,11 +107,14 @@ function Profile() {
                                                         </Col> */}
                                                         <Col lg="12">
                                                             <select style={{ width: "100%", }} name="AgentName" onChange={handleChange}>
-                                                                <option value="" disabled selected>Enter name of agent whom to transfer the rights of the property</option>
-                                                                <option value="volvo">Volvo</option>
+                                                                <option value="" disabled selected>Select name of agent whom to transfer the rights of the property</option>
+                                                                {/* <option value="volvo">Volvo</option>
                                                                 <option value="saab">Saab</option>
-                                                                <option value="opel">Opel</option>
-                                                                <option value="audi">Audi</option>
+                                                                <option value="opel">Opel</option> */}
+                                                                {agents.map(agent =>
+                                                                         <option value={agent}>{agent}</option>
+                                                                )}
+                                                                
 
                                                             </select>
                                                         </Col>
@@ -136,10 +141,9 @@ function Profile() {
                                                     <Col lg="13">
                                                         <select style={{ width: "100%", }} name="PropID" onChange={handleChange}>
                                                             <option value="" disabled selected>PROP-12345</option>
-                                                            <option value="volvo">Volvo</option>
-                                                            <option value="saab">Saab</option>
-                                                            <option value="opel">Opel</option>
-                                                            <option value="audi">Audi</option>
+                                                            {agents.map(agent =>
+                                                                         <option value={agent}>{agent}</option>
+                                                                )}
                                                         </select>
                                                     </Col>
                                                 </FormGroup>
