@@ -3,7 +3,7 @@ import { myStxAddress } from "../../components/auth";
 
 import { useState } from "react";
 
-// import { Dropdown } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 
 // import { Dropdown, Selection } from 'react-dropdown-now';
 // import 'react-dropdown-now/style.css';
@@ -32,8 +32,10 @@ import UserHeader from "components/Headers/UserHeader.js";
 function Profile() {
 
     const [state, setState] = useState({
-        AgentName: "",
-        PropID: ""
+        Username: "",
+        EmailAddress: "",
+        FirstName: "",
+        LastName: ""
     })
 
     // let submitted = false;
@@ -53,13 +55,6 @@ function Profile() {
         console.log(state);
     };
 
-    const agents = ["Ali", "Ummar", "James"];
-
-    // const dropdown = {
-    //     color: 'white',
-    //     FontFace: 
-    // };
-
     return (
         <>
             <UserHeader />
@@ -67,7 +62,7 @@ function Profile() {
             <Container className="mt--7" fluid>
                 <Row>
 
-                    <Col className="order-xl-1" xl="12">
+                    <Col className="order-xl-1" xl="8">
                         <Card className="bg-secondary shadow">
                             <CardHeader className="bg-white border-0">
                                 <Row className="align-items-center">
@@ -86,49 +81,33 @@ function Profile() {
                                         <Row>
                                             <Col lg="9">
                                                 <FormGroup>
-
-
                                                     <label
                                                         className="form-control-label"
                                                         htmlFor="input-username"
                                                     >
                                                         Agent Name
                                                     </label>
-                                                    <Row>
-                                                        {/* <Col lg="12">
-                                                            <Input
-                                                                className="form-control-alternative"
-                                                                id="input-username"
-                                                                placeholder="Enter name of agent whom to transfer the rights of the property"
-                                                                type="text"
-                                                                name="Username"
-                                                                onChange={handleChange}
-                                                            />
-                                                        </Col> */}
-                                                        <Col lg="12">
-                                                            <select style={{ width: "100%", }} name="AgentName" onChange={handleChange}>
-                                                                <option value="" disabled selected>Select name of agent whom to transfer the rights of the property</option>
-                                                                {/* <option value="volvo">Volvo</option>
-                                                                <option value="saab">Saab</option>
-                                                                <option value="opel">Opel</option> */}
-                                                                {agents.map(agent =>
-                                                                         <option value={agent}>{agent}</option>
-                                                                )}
-                                                                
+                                                    <Input
+                                                        className="form-control-alternative"
+                                                        id="input-username"
+                                                        placeholder="Enter name of agent whom to transfer the rights of the property"
+                                                        type="text"
+                                                        name="Username"
+                                                        onChange={handleChange}
+                                                    />
+                                                    <Dropdown>
+                                                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                                            Dropdown Button
+                                                        </Dropdown.Toggle>
 
-                                                            </select>
-                                                        </Col>
-                                                    </Row>
+                                                        <Dropdown.Menu>
+                                                            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                                                            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                                                            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                                                        </Dropdown.Menu>
+                                                    </Dropdown>
                                                 </FormGroup>
                                             </Col>
-                                            {/* <Col lg="8">
-                                                <select name="cars" id="input" className="form-control-alternative">
-                                                    <option value="volvo">Volvo</option>
-                                                    <option value="saab">Saab</option>
-                                                    <option value="opel">Opel</option>
-                                                    <option value="audi">Audi</option>
-                                                </select>
-                                            </Col> */}
                                             <Col lg="6">
                                                 <FormGroup>
                                                     <label
@@ -138,14 +117,14 @@ function Profile() {
                                                         ID of Property/Equity
                                                     </label>
 
-                                                    <Col lg="13">
-                                                        <select style={{ width: "100%", }} name="PropID" onChange={handleChange}>
-                                                            <option value="" disabled selected>PROP-12345</option>
-                                                            {agents.map(agent =>
-                                                                         <option value={agent}>{agent}</option>
-                                                                )}
-                                                        </select>
-                                                    </Col>
+                                                    <Input
+                                                        className="form-control-alternative"
+                                                        id="input-email"
+                                                        placeholder="PROP-123"
+                                                        type="email"
+                                                        name="EmailAddress"
+                                                        onChange={handleChange}
+                                                    />
                                                 </FormGroup>
                                             </Col>
                                         </Row>

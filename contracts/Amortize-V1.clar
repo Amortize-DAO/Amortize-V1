@@ -25,20 +25,23 @@
 ;; )
 
 ;; public functions
+;; for registering new user
 (define-public (reg-user (national-id uint) (dob (string-ascii 10)) (ss uint))
     (ok (map-insert reg { id: tx-sender } { national-id: national-id, dob: dob, ss: ss }))
 )
 
+;; adding property information details
 (define-public (add-prop-info (token-uri (string-ascii 64)))
     (ok (map-insert prop-info { id: tx-sender } {token-uri: token-uri}))
 )
 
+;; adding details 
 (define-public (add-details (token-uri (string-ascii 64)))
     (ok (map-insert house-details {id: tx-sender} {token-uri: token-uri}))
 )
 
 
-;; read only
+;; read-only functions
 (define-read-only (is-new-user)
     (is-none (map-get? reg {id: tx-sender}))
 )

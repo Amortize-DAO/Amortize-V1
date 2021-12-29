@@ -13,12 +13,13 @@
 (define-constant err-beneficiary-only (err u104))
 (define-constant err-unlock-height-not-reached (err u105))
 
-;; Data
+;; Data-variables
 (define-data-var beneficiary (optional principal) none)
 (define-data-var unlock-height uint u0)
 ;; (define-data-var share uint u0)
 ;; (define-data-var total-balance uint u0)
 
+;; Locking STX for new beneficiaries
 (define-public (lock (new-beneficiary principal) (unlock-at uint) (amount uint))
     (begin
         (asserts! (is-eq tx-sender contract-owner) err-owner-only)
@@ -32,6 +33,7 @@
     )
 )
 
+;; lending STX to new beneficiaries
 (define-public (bestow (new-beneficiary principal))
     (begin
         (asserts! (is-eq (some tx-sender) (var-get beneficiary)) err-beneficiary-only)
@@ -40,6 +42,7 @@
     )
 )
 
+;; Claiming STX from multiple beneficiaries
 (define-public (claim)
     (begin
         (asserts! (is-eq (some tx-sender) (var-get beneficiary)) err-beneficiary-only)
