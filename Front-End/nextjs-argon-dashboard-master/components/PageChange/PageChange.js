@@ -3,7 +3,7 @@ import React from "react";
 // reactstrap components
 import { Spinner } from "reactstrap";
 
-import logo from "./Amortize-load2.gif";
+// import logo from "./Amortize-load2.gif";
 
 
 // core components
@@ -11,8 +11,8 @@ import logo from "./Amortize-load2.gif";
 export default function PageChange(props) {
   return (
     <div>
-      <img src={logo} alt="loading..." />
-      {/* <div className="page-transition-wrapper-div">
+      {/* <img src={logo} alt="loading..." /> */}
+      <div className="page-transition-wrapper-div">
         <div className="page-transition-icon-wrapper mb-3">
           <Spinner
             color="white"
@@ -23,7 +23,7 @@ export default function PageChange(props) {
         <h4 className="title text-white">
           Loading page contents for: {props.path}
         </h4>
-      </div> */}
+      </div>
     </div>
   );
 }

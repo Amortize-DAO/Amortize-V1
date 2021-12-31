@@ -27,7 +27,7 @@
     "@emotion/styled": "^11.6.0",
     "@fortawesome/fontawesome-free": "5.15.2",
     "@mui/material": "^5.2.6",
-    "@stacks/connect": "^5.5.0",
+    "@stacks/connect": "^6.0.0",
     "@stacks/network": "^2.0.1",
     "@stacks/profile": "^3.1.0",
     "@stacks/storage": "^2.0.1",
