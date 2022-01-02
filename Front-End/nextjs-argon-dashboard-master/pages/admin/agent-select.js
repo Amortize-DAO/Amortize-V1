@@ -30,9 +30,10 @@ import Admin from "layouts/Admin.js";
 import UserHeader from "components/Headers/UserHeader.js";
 import { LockEquity } from "../../components/contractCalls";
 
-function Profile() {
+function Agent() {
 
-    const [state, setState] = useState({
+  
+  const [state, setState] = useState({
         AgentName: "",
         PropID: ""
     })
@@ -51,9 +52,9 @@ function Profile() {
     const handleSubmit = (e) => {
         // submitted = true;
         e.preventDefault()
-        console.log(state);
+        //console.log(state);
         let beneficiary = "ST2C20XGZBAYFZ1NYNHT1J6MGMM0EW9X7PFZZEXA6";
-        LockEquity(beneficiary, 26325, 200);
+        LockEquity(state.AgentName,beneficiary, 26325, 200);
     };
 
     const agents = ["Ali", "Ummar", "James"];
@@ -177,6 +178,6 @@ function Profile() {
     );
 }
 
-Profile.layout = Admin;
+Agent.layout = Admin;
 
-export default Profile;
+export default Agent;

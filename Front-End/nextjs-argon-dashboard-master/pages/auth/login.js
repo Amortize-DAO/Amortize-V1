@@ -24,7 +24,7 @@ function Login() {
     <>
       <Col lg="5" md="7">
         <Card className="bg-secondary shadow border-0">
-          <CardHeader className="bg-transparent pb-5">
+          {/* <CardHeader className="bg-transparent pb-5">
             <div className="text-muted text-center mt-2 mb-3">
               <small>Sign in with</small>
             </div>
@@ -58,13 +58,13 @@ function Login() {
                 <span className="btn-inner--text">Google</span>
               </Button>
             </div>
-          </CardHeader>
-          <CardBody className="px-lg-5 py-lg-5">
-            <div className="text-center text-muted mb-4">
+          </CardHeader> */}
+          <CardBody className="px-lg-2 py-lg-2">
+            {/* <div className="text-center text-muted mb-4">
               <small>Or sign in with credentials</small>
-            </div>
+            </div> */}
             <Form role="form">
-              <FormGroup className="mb-3">
+              {/* <FormGroup className="mb-3">
                 <InputGroup className="input-group-alternative">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
@@ -104,10 +104,10 @@ function Login() {
                 >
                   <span className="text-muted">Remember me</span>
                 </label>
-              </div>
+              </div> */}
               <div className="text-center">
                 <Button className="my-4" color="primary" type="button" onClick={() => authenticate()}>
-                  Sign in
+                  Sign in with Wallet
                 </Button>
               </div>
             </Form>

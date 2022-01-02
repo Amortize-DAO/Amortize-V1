@@ -21,13 +21,16 @@ export function myStxAddress() {
 }
 
 export function authenticate() {
+
+  console.log(window.location.origin + "/assets/img/Amortize-pics/Amortize_Logo1.svg");
+
   showConnect({
     appDetails: {
       name: "Amortize",
-      icon: window.location.origin + "/img/Logo.svg",
+      icon: window.location.origin + '/img/Logo.svg',
     },
     redirectTo: "/",
-    onFinish: () => {window.location.reload()},
+    onFinish: () => {window.location.assign("/admin/profile");},
     userSession: userSession,
   });
 }
@@ -38,8 +41,11 @@ export function getUserData() {
   }
 }
 
+//Front-End\nextjs-argon-dashboard-master\assets\img\Amortize-pics\Amortize_Logo1.svg
+
 export function Signout() {
   if (userSession.isUserSignedIn()) {
-    userSession.signUserOut("/profile");
+    userSession.signUserOut("/admin/dashboard");
+    console.log("Signed out");
   }
 }

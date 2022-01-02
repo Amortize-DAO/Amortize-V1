@@ -1,4 +1,34 @@
-var routes = [
+import { userSession } from "./components/auth";
+
+var routesGuest = [
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    icon: "ni ni-tv-2 text-primary",
+    layout: "/admin",
+  },
+  
+  {
+    path: "/tables",
+    name: "Stats",
+    icon: "ni ni-bullet-list-67 text-red",
+    layout: "/admin",
+  },
+  {
+    path: "/login",
+    name: "Login",
+    icon: "ni ni-key-25 text-info",
+    layout: "/auth",
+  },
+  {
+    path: "/register",
+    name: "Register",
+    icon: "ni ni-circle-08 text-pink",
+    layout: "/auth",
+  },
+];
+
+var routesUser = [
   {
     path: "/dashboard",
     name: "Dashboard",
@@ -23,18 +53,6 @@ var routes = [
     icon: "ni ni-circle-08 text-pink",
     layout: "/admin",
   },
-  // {
-  //   path: "/icons",
-  //   name: "Icons",
-  //   icon: "ni ni-planet text-blue",
-  //   layout: "/admin",
-  // },
-  // {
-  //   path: "/maps",
-  //   name: "Maps",
-  //   icon: "ni ni-pin-3 text-orange",
-  //   layout: "/admin",
-  // },
   {
     path: "/profile",
     name: "User Profile",
@@ -60,4 +78,20 @@ var routes = [
     layout: "/auth",
   },
 ];
-export default routes;
+
+const getRoutes = () =>
+{
+  if (userSession != null || userSession != undefined)
+  {
+    if (userSession.isUserSignedIn())
+    {
+      return routesUser;
+    }
+    else
+    {
+      return routesGuest;
+    }
+  }
+};
+
+export default getRoutes;

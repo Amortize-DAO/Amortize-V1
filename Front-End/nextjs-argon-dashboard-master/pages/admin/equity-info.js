@@ -35,9 +35,10 @@ import UserHeader from "components/Headers/UserHeader.js";
 
 import Slide from "components/Sliders/Slide.js"
 
-let triedFetching = false;
 
 function EquityInfo() {
+
+    const [isFetching, setFetching] = useState(false);
 
     const [state, setState] = useState({
         ValueOfHome: "",
@@ -55,7 +56,7 @@ function EquityInfo() {
         })
     };
 
-    if (!triedFetching) {
+    if (!isFetching) {
         fetchEquityInfo(userSession).then((equityinfo) => {
           setState({
             ValueOfHome: equityinfo.ValueOfHome,
@@ -65,9 +66,10 @@ function EquityInfo() {
           SliderSetState(equityinfo.TermLength);
           
         });
-        triedFetching = true;
+        setFetching(true);
         console.log("Tried Fetching");
       }
+
 
     let HomeOwnerCal = new Array(1);
     HomeOwnerCal[0] = new HomeOwner(50000, state.ValueOfHome, SliderState, state.CurrentMorgageBalance);

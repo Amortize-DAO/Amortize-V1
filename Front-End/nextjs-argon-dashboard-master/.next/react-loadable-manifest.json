@@ -1,8 +1,26 @@
 {
+  "./connect-modal.entry.js": [
+    {
+      "id": "./node_modules/@stacks/connect-ui/dist/esm/connect-modal.entry.js",
+      "file": "static/chunks/1.js"
+    }
+  ],
+  "./core-js.js": [
+    {
+      "id": "./node_modules/@stacks/connect-ui/dist/esm/polyfills/core-js.js",
+      "file": "static/chunks/polyfills-core-js.js"
+    }
+  ],
   "./dev/noop": [
     {
       "id": "./node_modules/next/dist/client/dev/noop.js",
       "file": "static/chunks/0.js"
+    }
+  ],
+  "./dom.js": [
+    {
+      "id": "./node_modules/@stacks/connect-ui/dist/esm/polyfills/dom.js",
+      "file": "static/chunks/polyfills-dom.js"
     }
   ]
 }

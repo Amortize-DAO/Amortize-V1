@@ -28,9 +28,10 @@ import Admin from "layouts/Admin.js";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
 
-let triedFetching = false;
 
 function HomeReg() {
+
+  const [isFetching, setFetching] = useState(false);
 
   const [state, setState] = useState({
     Address: "",
@@ -40,7 +41,7 @@ function HomeReg() {
     Estate: ""
   });
 
-  if (!triedFetching) {
+  if (!isFetching) {
     fetchHomeInfo(userSession).then((homeinfo) => {
       setState({
         Address: homeinfo.Address,
@@ -51,7 +52,7 @@ function HomeReg() {
       });
       
     });
-    triedFetching = true;
+    setFetching(true);
     console.log("Tried Fetching");
   }
 

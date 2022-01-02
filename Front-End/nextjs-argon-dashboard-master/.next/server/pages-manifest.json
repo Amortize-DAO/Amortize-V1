@@ -3,5 +3,5 @@
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
   "/auth/login": "pages/auth/login.js",
-  "/admin/dashboard": "pages/admin/dashboard.js"
+  "/admin/agent-select": "pages/admin/agent-select.js"
 }

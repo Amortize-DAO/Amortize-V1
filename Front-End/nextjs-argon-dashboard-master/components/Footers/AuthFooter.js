@@ -15,10 +15,10 @@ function Login() {
                 © {new Date().getFullYear()}{" "}
                 <a
                   className="font-weight-bold ml-1"
-                  href="https://www.creative-tim.com?ref=njsad-auth-footer"
+                  // href="https://www.creative-tim.com?ref=njsad-auth-footer"
                   target="_blank"
                 >
-                  Creative Tim
+                  Amortize LLC
                 </a>
               </div>
             </Col>
@@ -26,23 +26,23 @@ function Login() {
               <Nav className="nav-footer justify-content-center justify-content-xl-end">
                 <NavItem>
                   <NavLink
-                    href="https://www.creative-tim.com?ref=njsad-auth-footer"
+                    // href="https://www.creative-tim.com?ref=njsad-auth-footer"
                     target="_blank"
                   >
-                    Creative Tim
+                    Amortize LLC
                   </NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink
-                    href="https://www.creative-tim.com/presentation?ref=njsad-auth-footer"
+                    // href="https://www.creative-tim.com/presentation?ref=njsad-auth-footer"
                     target="_blank"
                   >
                     About Us
                   </NavLink>
                 </NavItem>
-                <NavItem>
+                {/* <NavItem>
                   <NavLink
-                    href="http://blog.creative-tim.com?ref=njsad-auth-footer"
+                    // href="http://blog.creative-tim.com?ref=njsad-auth-footer"
                     target="_blank"
                   >
                     Blog
@@ -55,7 +55,7 @@ function Login() {
                   >
                     MIT License
                   </NavLink>
-                </NavItem>
+                </NavItem> */}
               </Nav>
             </Col>
           </Row>

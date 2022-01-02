@@ -29,9 +29,10 @@ import Admin from "layouts/Admin.js";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
 
-let triedFetching = false;
-
 function Profile() {
+
+  const [isFetching, setFetching] = useState(false);
+
   const [state, setState] = useState({
     Username: "",
     EmailAddress: "",
@@ -39,7 +40,7 @@ function Profile() {
     LastName: "",
   });
 
-  if (!triedFetching) {
+  if (!isFetching) {
     fetchUserInfo(userSession).then((userinfo) => {
       setState({
         Username: userinfo.Username,
@@ -48,7 +49,7 @@ function Profile() {
         LastName: userinfo.LastName,
       });
     });
-    triedFetching = true;
+    setFetching(true);
     console.log("Tried Fetching");
   }
 

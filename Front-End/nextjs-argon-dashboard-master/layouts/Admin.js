@@ -7,10 +7,12 @@ import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
-import routes from "routes.js";
+import getRoutes from "routes.js";
 
 function Admin(props) {
   // used for checking current route
+  const routes = getRoutes();
+  
   const router = useRouter();
   let mainContentRef = React.createRef();
   React.useEffect(() => {
